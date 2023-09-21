@@ -1,0 +1,16 @@
+@import './_variables';
+
+@mixin graph-paper {
+    $big: 80px;
+    $small: 16px;
+    $big-line: 2px;
+    $small-line: 1px;
+
+    background-color: $blue;
+    background-size: $big $big, $big $big, $small $small, $small $small;
+    background-image:
+        linear-gradient(to right, $pale-blue $big-line, transparent $big-line),
+        linear-gradient(to bottom, $pale-blue $big-line, transparent $big-line),
+        linear-gradient(to right, $pale-blue $small-line, transparent $small-line),
+        linear-gradient(to bottom, $pale-blue $small-line, transparent $small-line);
+}

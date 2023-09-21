@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+@import './_partials/_variables';
+@import './_partials/_mixins';
+
+.selected {
+    @include graph-paper;
+    color: white;
+}
+
+.disabled {
+    cursor: not-allowed;
+    color: $disabled-colour;
+}
+
+.available {
+    cursor: pointer;
+    background-color: $pale-blue;
+    &:hover {
+        background-color: $blue;
+        color: white
+    }
+}
