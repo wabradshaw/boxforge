@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { JourneyBannerComponent } from './journey-banner/journey-banner.component';
+import { SpecificationComponent } from '../specification/specification.component';
+import { DesignComponent } from '../design/design.component';
+import { ArrangementComponent } from '../arrangement/arrangement.component';
+import { CustomisationComponent } from '../customisation/customisation.component';
+import { ReviewComponent } from '../review/review.component';
 
 import { Journey } from './journey';
 
@@ -17,10 +22,25 @@ import { Journey } from './journey';
 @Component({
   selector: 'app-journey',
   standalone: true,
-  imports: [CommonModule, JourneyBannerComponent],
+  imports: [
+    CommonModule, 
+    JourneyBannerComponent, 
+    SpecificationComponent,
+    DesignComponent,
+    ArrangementComponent,
+    CustomisationComponent,
+    ReviewComponent
+  ],
   template: `
-    <div>
+    <div class="journey">
       <app-journey-banner [journey]="journey"/>
+      <div class="journey-wrapper">
+        <app-specification/>
+        <app-design *ngIf="journey.compartmentDesign.state !== 'disabled'"/>
+        <app-arrangement *ngIf="journey.arrangement.state !== 'disabled'"/>
+        <app-customisation  *ngIf="journey.customisation.state !== 'disabled'"/>
+        <app-review *ngIf="journey.review.state !== 'disabled'"/>
+      </div>
     </div>
   `,
   styleUrls: ['./journey.component.scss']

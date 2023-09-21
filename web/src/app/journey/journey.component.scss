@@ -1,0 +1,14 @@
+.journey {
+    display: flex;
+    flex-direction: column;
+
+    app-journey-banner {
+        position: sticky;
+        top: 10px;
+    }
+
+    .journey-wrapper {
+        overflow-y: auto;
+        flex: 1;
+    }
+}

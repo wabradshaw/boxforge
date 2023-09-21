@@ -1,4 +1,5 @@
 import { JourneyStage } from "./journey-stage";
+import { Specification } from "../specification/specification";
 
 /**
  * The main business journey for designing a box. This includes all of the steps in the journey:
@@ -10,14 +11,14 @@ import { JourneyStage } from "./journey-stage";
  * In the future, steps for reviewing / purchasing etc could be added.
  */
 export class Journey {
-    readonly specification: JourneyStage;
+    readonly specification: Specification;
     readonly compartmentDesign: JourneyStage;
     readonly arrangement: JourneyStage;
     readonly customisation: JourneyStage;
     readonly review: JourneyStage;
 
     constructor(
-        specification?: JourneyStage,
+        specification?: Specification,
         compartmentDesign?: JourneyStage,
         arrangement?: JourneyStage,
         customisation?: JourneyStage,
