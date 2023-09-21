@@ -1,0 +1,17 @@
+@import '../../../../_partials/_mixins';
+
+.card.clip-lid {
+
+    &:hover img.selectable:first-child {
+        @include graph-paper;
+    }
+
+    .lid {
+        transform: translateY(-80px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .lid {
+        transform: translateY(0);
+    }
+}

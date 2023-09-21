@@ -1,0 +1,7 @@
+@import '../../../../_partials/_mixins';
+
+.card.open-box {
+    &:hover img.selectable:first-child {
+        @include graph-paper;
+    }
+}

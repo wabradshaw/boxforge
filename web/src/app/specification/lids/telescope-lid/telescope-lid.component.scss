@@ -1,0 +1,17 @@
+@import '../../../../_partials/_mixins';
+
+.card.telescope-lid {
+
+    &:hover img:first-child {
+        @include graph-paper;
+    }
+
+    .lid {
+        transform: translateY(-100px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .lid {
+        transform: translateY(0);
+    }
+}

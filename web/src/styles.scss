@@ -60,6 +60,11 @@ html {
         max-width: 400px;
     }
     
+    // Angular components inside gridboxes were ignoring the flex property.
+    & > :not(div){
+        display: flex;
+    }
+
     .card {        
         flex: 1;
         margin: 10px;
@@ -78,37 +83,24 @@ html {
         }
 
         .image-wrapper {
+            position: relative;
 
             img {
                 width: 100%;
-                //height: 300px;
                 object-fit: cover;
+
+                &:not(:first-child) {
+                    position: absolute;
+                    top: 0px;
+                    left: 0px;
+                }
             }
-
-            .lid {
-                background-color: transparent !important;
-
-                &.telescope {
-                    top: -100px;
-                    transition: 1s ease-in-out;
-                }
-
-                &.slab {
-                    top: -80px;
-                    transition: 1s ease-in-out;
-                }
-
-                &.clip {
-                    top: -80px;
-                    transition: 1s ease-in-out;
-                }
-            }            
         }
         
         .card-contents {
             padding: 10px 20px 10px 20px;
             text-align: justify;
-            
+
             .card-title {
                 font-size: large;
                 font-weight: bold;
