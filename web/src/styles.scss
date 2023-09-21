@@ -1,6 +1,21 @@
 @import './_partials/_variables';
 @import './_partials/_mixins';
 
+@font-face {
+	font-family: montserrat;
+	src: url('./assets/fonts/montserrat/Montserrat-ExtraBold.otf');
+	font-weight: 900;
+}
+
+@font-face {
+	font-family: montserrat;
+ 	src: url('./assets/fonts/montserrat/Montserrat-Regular.otf');
+}
+
+* {
+	font-family: montserrat;
+}
+
 .selected {
     @include graph-paper;
     color: white;
