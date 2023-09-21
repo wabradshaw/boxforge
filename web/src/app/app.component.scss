@@ -1,12 +1,8 @@
 @import '../_partials/_variables';
 @import '../_partials/_mixins';
 
-body {
-    background-color: lightgray;                
-}
-
 .wrapper {
-    display: flex;
+    display: flex;  
 }
 
 .grid-box {

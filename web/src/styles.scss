@@ -16,21 +16,27 @@
 	font-family: montserrat;
 }
 
+html {
+    background-color: $background-colour;
+}
+
 .selected {
     @include graph-paper;
-    color: white;
+    color: $selected-text;
 }
 
 .disabled {
     cursor: not-allowed;
-    color: $disabled-colour;
+    background-color: $disabled-colour;
+    color: $disabled-text;
 }
 
 .available {
     cursor: pointer;
-    background-color: $pale-blue;
+    background-color: $selectable-colour;
+    color: $selectable-text;
     &:hover {
-        background-color: $blue;
-        color: white
+        background-color: $hovering-colour;
+        color: $hovering-text;
     }
 }
