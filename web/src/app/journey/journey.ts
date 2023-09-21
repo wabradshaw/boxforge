@@ -24,11 +24,11 @@ export class Journey {
         customisation?: JourneyStage,
         review?: JourneyStage,
     ) {
-        this.specification = specification || { name: 'Spec', state: 'available' };
-        this.compartmentDesign = compartmentDesign || { name: 'Design', state: 'selected' };
-        this.arrangement = arrangement || { name: 'Arrange', state: 'disabled' };
-        this.customisation = customisation || { name: 'Customise', state: 'disabled' };
-        this.review = review || { name: 'Review', state: 'disabled' };
+        this.specification = specification || new Specification('Spec','selected');
+        this.compartmentDesign = compartmentDesign || { stageName: 'Design', state: 'available' };
+        this.arrangement = arrangement || { stageName: 'Arrange', state: 'disabled' };
+        this.customisation = customisation || { stageName: 'Customise', state: 'disabled' };
+        this.review = review || { stageName: 'Review', state: 'disabled' };
     }
 
     list(): JourneyStage[] {

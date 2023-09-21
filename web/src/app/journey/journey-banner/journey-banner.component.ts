@@ -9,7 +9,7 @@ import { Journey } from '../journey';
   imports: [CommonModule],
   template: `
     <div class='journey-banner'>
-      <div *ngFor="let stage of journey.list()" [ngClass]="stage.state">{{ stage.name }}</div>
+      <div *ngFor="let stage of journey.list()" [ngClass]="stage.state">{{ stage.stageName }}</div>
     </div>
   `,
   styleUrls: ['./journey-banner.component.scss']

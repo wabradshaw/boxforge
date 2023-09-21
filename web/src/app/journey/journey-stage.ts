@@ -1,4 +1,4 @@
 export interface JourneyStage {
-    name: string;
+    stageName: string;
     state: 'selected' | 'available' | 'disabled';
 }
