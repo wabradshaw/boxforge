@@ -85,6 +85,9 @@ html {
         .image-wrapper {
             position: relative;
 
+            //Not sure why this is needed...
+            margin-bottom: -4px;
+
             img {
                 width: 100%;
                 object-fit: cover;
@@ -98,18 +101,26 @@ html {
         }
         
         .card-contents {
-            padding: 10px 20px 10px 20px;
             text-align: justify;
+
+            div {
+                padding: 10px 20px 10px 20px;
+            }
 
             .card-title {
                 font-size: large;
                 font-weight: bold;
-                line-height: 1.75;
+                line-height: 1.75;                
             }
 
             .card-description {
                 line-height: 1.5;
-            }    
+            }
+            
+            .card-warning {
+                background-color: pink !important;
+                color: red !important;
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
+import { BoxPlan } from "../boxplan";
 import { JourneyStage } from "./journey-stage";
-import { Specification } from "../specification/specification";
 
 /**
  * The main business journey for designing a box. This includes all of the steps in the journey:
@@ -11,24 +11,20 @@ import { Specification } from "../specification/specification";
  * In the future, steps for reviewing / purchasing etc could be added.
  */
 export class Journey {
-    readonly specification: Specification;
+    readonly specification: JourneyStage;
     readonly compartmentDesign: JourneyStage;
     readonly arrangement: JourneyStage;
     readonly customisation: JourneyStage;
     readonly review: JourneyStage;
 
     constructor(
-        specification?: Specification,
-        compartmentDesign?: JourneyStage,
-        arrangement?: JourneyStage,
-        customisation?: JourneyStage,
-        review?: JourneyStage,
+        boxPlan: BoxPlan
     ) {
-        this.specification = specification || new Specification('Spec','selected');
-        this.compartmentDesign = compartmentDesign || { stageName: 'Design', state: 'available' };
-        this.arrangement = arrangement || { stageName: 'Arrange', state: 'disabled' };
-        this.customisation = customisation || { stageName: 'Customise', state: 'disabled' };
-        this.review = review || { stageName: 'Review', state: 'disabled' };
+        this.specification =  { stageName: 'Spec', state: 'selected'};
+        this.compartmentDesign = { stageName: 'Design', state: 'available' };
+        this.arrangement = { stageName: 'Arrange', state: 'disabled' };
+        this.customisation = { stageName: 'Customise', state: 'disabled' };
+        this.review = { stageName: 'Review', state: 'disabled' };
     }
 
     list(): JourneyStage[] {

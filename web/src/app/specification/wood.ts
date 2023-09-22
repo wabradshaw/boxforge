@@ -31,3 +31,5 @@ export const possibleWoods: Wood[] = [
         description: "A beatuiful wood that is incredibly strong, but can be brittle."
     }
 ];
+
+export const defaultWood: Wood = possibleWoods[0];

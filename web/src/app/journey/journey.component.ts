@@ -9,6 +9,7 @@ import { CustomisationComponent } from '../customisation/customisation.component
 import { ReviewComponent } from '../review/review.component';
 
 import { Journey } from './journey';
+import { BoxPlan } from '../boxplan';
 
 /**
  * The main business journey for designing a box. This includes all of the steps in the journey:
@@ -35,7 +36,7 @@ import { Journey } from './journey';
     <div class="journey">
       <app-journey-banner [journey]="journey"/>
       <div class="journey-wrapper">
-        <app-specification/>
+        <app-specification [boxPlan]="boxPlan"/>
         <app-design *ngIf="journey.compartmentDesign.state !== 'disabled'"/>
         <app-arrangement *ngIf="journey.arrangement.state !== 'disabled'"/>
         <app-customisation  *ngIf="journey.customisation.state !== 'disabled'"/>
@@ -46,5 +47,6 @@ import { Journey } from './journey';
   styleUrls: ['./journey.component.scss']
 })
 export class JourneyComponent {
-  readonly journey = new Journey();
+  readonly boxPlan = new BoxPlan();
+  readonly journey = new Journey(this.boxPlan);
 }
