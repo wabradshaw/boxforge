@@ -56,4 +56,9 @@ export class BoxPlan {
         }
         this._wood = wood;
     }
+
+    updateLid(lid: Lid): void {
+        //TODO recalculate
+        this._lid = lid;
+    }
 }

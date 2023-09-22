@@ -1,0 +1,37 @@
+@import '../../_partials/_mixins';
+
+.card.clip-lid ::ng-deep {
+
+    .lid {
+        transform: translateY(-80px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .lid {
+        transform: translateY(0);
+    }
+}
+
+.card.slab-lid ::ng-deep {
+
+    .lid.slab {
+        transform: translateY(-90px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .lid.slab {
+        transform: translateY(0);
+    }
+}
+
+.card.telescopic-lid ::ng-deep {
+
+    .lid {
+        transform: translateY(-100px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .lid {
+        transform: translateY(0);
+    }
+}

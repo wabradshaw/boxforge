@@ -72,14 +72,21 @@ html {
         border-radius: 4px;
         overflow: hidden;
 
-        background-color: $selectable-colour;        
-        color: $selectable-text;
-
         box-shadow: $standard-shadow;
         transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 
         &:hover {
-            box-shadow: $shadow;	
+            box-shadow: $shadow;
+            
+            &:not(.selected) {
+                background-color: $hovering-colour;
+                color: $hovering-text;
+            }
+        }
+        
+        &:not(.selected) {
+            background-color: $selectable-colour;        
+            color: $selectable-text;
         }
 
         .image-wrapper {
