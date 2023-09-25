@@ -53,5 +53,5 @@ import { BoxPlan } from 'src/app/boxplan';
 })
 export class JourneyComponent {
   readonly boxPlan = new BoxPlan();
-  readonly journey = new Journey(this.boxPlan);
+  journey = this.boxPlan.journey;
 }

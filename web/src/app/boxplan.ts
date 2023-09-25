@@ -1,3 +1,5 @@
+import { Journey } from "./journey/journey";
+
 import { Wood, defaultWood } from "./specification/wood";
 import { Lid, defaultLid } from "./specification/lid";
 
@@ -5,6 +7,8 @@ import { Lid, defaultLid } from "./specification/lid";
  * The main data model for a box.
  */
 export class BoxPlan {
+
+    readonly journey = new Journey();
 
     private _defaultBoxName = "MyBox";
     private _boxName: string = this._defaultBoxName;
@@ -47,7 +51,7 @@ export class BoxPlan {
     getActualWorkableDepth():number | undefined {return this._actualWorkableDepth};
     getActualWorkableWidth():number | undefined {return this._actualWorkableWidth};
     getActualWorkableLength():number | undefined {return this._actualWorkableLength};
-
+    
     updateBoxName(boxName: string):void {
         if(boxName.trim().length == 0) {
             this._boxName = this._defaultBoxName;
@@ -71,9 +75,9 @@ export class BoxPlan {
     }
 
     updateTargetWorkableDepth(depth: number): void {
-        //TODO recalculate
         this._targetWorkableDepth = depth;        
-        this._recalculateTargetDimensions();        
+        this._recalculateTargetDimensions();
+        this.journey.compartmentDesign.state = 'available';        
     }
 
     getTargetDepthDifference(): number {

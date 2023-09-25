@@ -1,4 +1,3 @@
-import { BoxPlan } from "src/app/boxplan";
 import { JourneyStage } from "./journey-stage";
 
 /**
@@ -17,11 +16,9 @@ export class Journey {
     readonly customisation: JourneyStage;
     readonly review: JourneyStage;
 
-    constructor(
-        boxPlan: BoxPlan
-    ) {
+    constructor() {
         this.specification =  { stageName: 'Spec', state: 'selected'};
-        this.compartmentDesign = { stageName: 'Design', state: 'available' };
+        this.compartmentDesign = { stageName: 'Design', state: 'disabled' };
         this.arrangement = { stageName: 'Arrange', state: 'disabled' };
         this.customisation = { stageName: 'Customise', state: 'disabled' };
         this.review = { stageName: 'Review', state: 'disabled' };

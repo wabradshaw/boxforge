@@ -146,4 +146,9 @@ html {
         gap: 20px;
         flex-wrap: wrap;
     }
+
+    .required::after {
+        content: '*  (required)';
+        color: $warning-text;
+    }
 }
