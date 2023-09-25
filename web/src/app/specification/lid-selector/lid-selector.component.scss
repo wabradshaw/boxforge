@@ -1,0 +1,30 @@
+@import 'src/_partials/_mixins';
+
+.card {
+    .clip-lid ::ng-deep .lid {
+        transform: translateY(-80px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .clip-lid ::ng-deep .lid {
+        transform: translateY(0);
+    }
+
+    .slab-lid ::ng-deep .lid {
+        transform: translateY(-90px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .slab-lid ::ng-deep .lid.slab {
+        transform: translateY(0);
+    }
+
+    .telescopic-lid ::ng-deep .lid {
+        transform: translateY(-100px);
+        transition: 1s ease-in-out;
+    }
+
+    &:hover .telescopic-lid ::ng-deep .lid {
+        transform: translateY(0);
+    }
+}
