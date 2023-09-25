@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BoxPlan } from '../../boxplan';
+import { BoxPlan } from 'src/app/boxplan';
 import { Wood, possibleWoods } from '../wood';
 
 import { padList } from 'src/_partials/_cardpad';
@@ -41,7 +41,7 @@ export class WoodSelectorComponent {
   possibleWoodsList: any[] = padList(possibleWoods);
   
   isWood(val: any): boolean { return typeof val !== 'string'; }
-  
+
   updateWood(wood: Wood){
     this.boxPlan.updateWood(wood);
   }

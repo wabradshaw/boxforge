@@ -9,7 +9,7 @@ import { CustomisationComponent } from '../customisation/customisation.component
 import { ReviewComponent } from '../review/review.component';
 
 import { Journey } from './journey';
-import { BoxPlan } from '../boxplan';
+import { BoxPlan } from 'src/app/boxplan';
 
 /**
  * The main business journey for designing a box. This includes all of the steps in the journey:

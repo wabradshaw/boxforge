@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { BoxPlan } from '../boxplan';
+import { BoxPlan } from 'src/app/boxplan';
 import { WoodSelectorComponent } from './wood-selector/wood-selector.component';
 import { LidSelectorComponent } from './lid-selector/lid-selector.component';
 

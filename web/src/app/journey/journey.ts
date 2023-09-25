@@ -1,4 +1,4 @@
-import { BoxPlan } from "../boxplan";
+import { BoxPlan } from "src/app/boxplan";
 import { JourneyStage } from "./journey-stage";
 
 /**

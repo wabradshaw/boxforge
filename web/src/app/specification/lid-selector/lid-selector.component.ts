@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BoxPlan } from '../../boxplan';
+import { BoxPlan } from 'src/app/boxplan';
 import { Lid, possibleLids} from '../lid';
 
 import { padList } from 'src/_partials/_cardpad';
