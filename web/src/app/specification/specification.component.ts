@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { BoxPlan } from '../boxplan';
 import { Wood, possibleWoods } from './wood';
@@ -11,16 +12,21 @@ import { padList } from 'src/_partials/_cardpad';
   selector: 'app-specification',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   template: `
     <div class="specification">
       <div class="intro">
         First, we need to decide what type of box you want to make.
       </div>
+      <div class="prompt inlinable">      
+        <div>What should we call your box?</div>
+        <input type="text" [(ngModel)]="boxName" maxlength="24" (input)="boxPlan.updateBoxName(boxName)" />
+      </div>      
       <!-- TODO - box name -->
       <hr/>
-      <div class="intro">
+      <div class="prompt">
         What wood do you want the box to be made from?
       </div>
       <div class="list-wrapper">
@@ -42,7 +48,7 @@ import { padList } from 'src/_partials/_cardpad';
         </div>
       </div>
       <hr/>
-      <div class="intro">
+      <div class="prompt">
         What type of lid would you like for the box?
       </div>
       <div class="list-wrapper">
@@ -66,13 +72,18 @@ import { padList } from 'src/_partials/_cardpad';
 export class SpecificationComponent {
   @Input() boxPlan!: BoxPlan;
   
+  boxName = "";
   possibleWoodsList: any[] = padList(possibleWoods);
   possibleLidsList: any[] = padList(possibleLids);
 
+  private listFormatter = new Intl.ListFormat('en');
+
+  ngOnInit(): void {
+    this.boxName = this.boxPlan.getBoxName();
+  }
+
   isWood(val: any): boolean { return typeof val !== 'string'; }
   isLid(val: any): boolean { return typeof val !== 'string'; }
-
-  private listFormatter = new Intl.ListFormat('en');
 
   lidChangeDescription(lid: Lid){
     let woodWidth = this.boxPlan.getWood().size;

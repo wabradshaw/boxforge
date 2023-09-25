@@ -132,3 +132,17 @@ html {
         }
     }
 }
+
+.intro {
+    font-size:larger;
+    padding: 1em $side-padding 1em $side-padding;
+}
+
+.prompt {
+    padding: 10px;
+    
+    &.inlinable {
+        display: flex;
+        gap: 20px;
+    }
+}
