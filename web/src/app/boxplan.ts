@@ -6,7 +6,8 @@ import { Lid, defaultLid } from "./specification/lid";
  */
 export class BoxPlan {
 
-    private _boxName: string = "MyBox";
+    private _defaultBoxName = "MyBox";
+    private _boxName: string = this._defaultBoxName;
     private _wood: Wood = defaultWood;
     private _lid: Lid = defaultLid;
 
@@ -47,7 +48,11 @@ export class BoxPlan {
     getActualWorkableLength():number | undefined {return this._actualWorkableLength};
 
     updateBoxName(boxName: string):void {
-        this._boxName = boxName;
+        if(boxName.trim().length == 0) {
+            this._boxName = this._defaultBoxName;
+        } else {
+            this._boxName = boxName;
+        }
     }
 
     updateWood(wood: Wood):void {
