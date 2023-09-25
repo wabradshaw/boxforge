@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { BoxPlan } from '../boxplan';
-import { Wood, possibleWoods } from './wood';
 import { Lid, possibleLids} from './lid';
+import { WoodSelectorComponent } from './wood-selector/wood-selector.component';
 
 import { padList } from 'src/_partials/_cardpad';
 
@@ -13,7 +13,9 @@ import { padList } from 'src/_partials/_cardpad';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    WoodSelectorComponent
+
   ],
   template: `
     <div class="specification">
@@ -26,27 +28,7 @@ import { padList } from 'src/_partials/_cardpad';
       </div>      
       <!-- TODO - box name -->
       <hr/>
-      <div class="prompt">
-        What wood do you want the box to be made from?
-      </div>
-      <div class="list-wrapper">
-        <div class="grid-box grid-4"
-          *ngFor="let wood of possibleWoodsList">
-          <div *ngIf="isWood(wood)" class="card" [ngClass]="{'selected': wood==boxPlan.getWood()}" (click)="updateWood(wood)">
-              <div class="image-wrapper">
-                  <img [src]="wood.picture" [alt]="wood.name"/>
-              </div>
-              <div class="card-contents">
-                  <div class="card-title">{{wood.size}}mm {{wood.name}}</div>
-                  <div class="card-description">{{wood.description}}</div>
-                  <div class="card-warning"
-                    *ngIf="wood.size!=boxPlan.getWood().size"
-                  >This is a different size, so it will change your design</div>
-              </div>
-          </div>
-          <div *ngIf="isWood(wood)==false"></div>
-        </div>
-      </div>
+      <app-wood-selector [boxPlan]="boxPlan"/>
       <hr/>
       <div class="prompt">
         What type of lid would you like for the box?
@@ -73,7 +55,6 @@ export class SpecificationComponent {
   @Input() boxPlan!: BoxPlan;
   
   boxName = "";
-  possibleWoodsList: any[] = padList(possibleWoods);
   possibleLidsList: any[] = padList(possibleLids);
 
   private listFormatter = new Intl.ListFormat('en');
@@ -82,7 +63,6 @@ export class SpecificationComponent {
     this.boxName = this.boxPlan.getBoxName();
   }
 
-  isWood(val: any): boolean { return typeof val !== 'string'; }
   isLid(val: any): boolean { return typeof val !== 'string'; }
 
   lidChangeDescription(lid: Lid){
@@ -110,9 +90,6 @@ export class SpecificationComponent {
     }
   }
 
-  updateWood(wood: Wood){
-    this.boxPlan.updateWood(wood);
-  }
   updateLid(lid: Lid){
     this.boxPlan.updateLid(lid);
   }
