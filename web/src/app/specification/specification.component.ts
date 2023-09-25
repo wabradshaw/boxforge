@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BoxPlan } from 'src/app/boxplan';
 import { WoodSelectorComponent } from './wood-selector/wood-selector.component';
 import { LidSelectorComponent } from './lid-selector/lid-selector.component';
+import { DimensionsSelectorComponent } from './dimensions-selector/dimensions-selector.component';
 
 
 @Component({
@@ -14,7 +15,8 @@ import { LidSelectorComponent } from './lid-selector/lid-selector.component';
     CommonModule,
     FormsModule,
     WoodSelectorComponent,
-    LidSelectorComponent
+    LidSelectorComponent,
+    DimensionsSelectorComponent
   ],
   template: `
     <div class="specification">
@@ -30,6 +32,8 @@ import { LidSelectorComponent } from './lid-selector/lid-selector.component';
       <app-wood-selector [boxPlan]="boxPlan"/>
       <hr/>
       <app-lid-selector [boxPlan]="boxPlan"/>
+      <hr/>
+      <app-dimensions-selector [boxPlan]="boxPlan"/>
     </div>
   `,
   styleUrls: ['./specification.component.scss']

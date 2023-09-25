@@ -11,13 +11,13 @@ export class BoxPlan {
     private _wood: Wood = defaultWood;
     private _lid: Lid = defaultLid;
 
-    private _maxDepth?: number;
-    private _maxWidth?: number;
-    private _maxLength?: number;
+    private _targetDepth?: number;
+    private _targetWidth?: number;
+    private _targetLength?: number;
 
-    private _maxWorkableDepth?: number;
-    private _maxWorkableWidth?: number;
-    private _maxWorkableLength?: number;
+    private _targetWorkableDepth?: number;
+    private _targetWorkableWidth?: number;
+    private _targetWorkableLength?: number;
 
     private _actualDepth?: number;
     private _actualWidth?: number;
@@ -31,13 +31,14 @@ export class BoxPlan {
     getWood():Wood {return this._wood};
     getLid():Lid {return this._lid};
 
-    getMaxDepth():number | undefined {return this._maxDepth};
-    getMaxWidth():number | undefined {return this._maxWidth};
-    getMaxLength():number | undefined {return this._maxLength};
+    // Users set the target workable depth, but the target overall box size.
+    getTargetWorkableDepth():number | undefined {return this._targetWorkableDepth};
+    getTargetWidth():number | undefined {return this._targetWidth};
+    getTargetLength():number | undefined {return this._targetLength};
 
-    getMaxWorkableDepth():number | undefined {return this._maxWorkableDepth};
-    getMaxWorkableWidth():number | undefined {return this._maxWorkableWidth};
-    getMaxWorkableLength():number | undefined {return this._maxWorkableLength};
+    getTargetDepth():number | undefined {return this._targetDepth};    
+    getTargetWorkableWidth():number | undefined {return this._targetWorkableWidth};
+    getTargetWorkableLength():number | undefined {return this._targetWorkableLength};
 
     getActualDepth():number | undefined {return this._actualDepth};
     getActualWidth():number | undefined {return this._actualWidth};
@@ -57,6 +58,7 @@ export class BoxPlan {
 
     updateWood(wood: Wood):void {
         if(this._wood.size != wood.size){
+            this._recalculateTargetDimensions();        
             //TODO recalculate everything...
         }
         this._wood = wood;
@@ -65,5 +67,32 @@ export class BoxPlan {
     updateLid(lid: Lid): void {
         //TODO recalculate
         this._lid = lid;
+        this._recalculateTargetDimensions();        
+    }
+
+    updateTargetWorkableDepth(depth: number): void {
+        //TODO recalculate
+        this._targetWorkableDepth = depth;        
+        this._recalculateTargetDimensions();        
+    }
+
+    getTargetDepthDifference(): number {
+        let woodWidth = this._wood.size;
+        let lidHeightFunction = this._lid.depthChange;
+        return woodWidth + lidHeightFunction(woodWidth)
+    }
+
+    private _recalculateTargetDimensions() {
+        let woodWidth = this._wood.size;
+
+        if(this._targetWorkableDepth){
+            this._targetDepth = this._targetWorkableDepth + this.getTargetDepthDifference();
+        }
+        if(this._targetWidth){
+            this._targetWorkableWidth = this._targetWidth - this._lid.widthChange(woodWidth);
+        }
+        if(this._targetLength){
+            this._targetDepth = this._targetLength - this._lid.lengthChange(woodWidth);
+        }
     }
 }
