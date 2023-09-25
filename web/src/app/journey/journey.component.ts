@@ -36,10 +36,15 @@ import { BoxPlan } from 'src/app/boxplan';
     <div class="journey">
       <app-journey-banner [journey]="journey"/>
       <div class="journey-wrapper">
+        <div class="journey-stage-banner" [ngClass]="journey.specification.state">Specification</div>
         <app-specification [boxPlan]="boxPlan"/>
+        <div class="journey-stage-banner" [ngClass]="journey.compartmentDesign.state">Compartment Design</div>
         <app-design *ngIf="journey.compartmentDesign.state !== 'disabled'"/>
+        <div class="journey-stage-banner" [ngClass]="journey.arrangement.state">Arrangement</div>
         <app-arrangement *ngIf="journey.arrangement.state !== 'disabled'"/>
+        <div class="journey-stage-banner" [ngClass]="journey.customisation.state">Customisation</div>
         <app-customisation  *ngIf="journey.customisation.state !== 'disabled'"/>
+        <div class="journey-stage-banner" [ngClass]="journey.review.state">Review</div>
         <app-review *ngIf="journey.review.state !== 'disabled'"/>
       </div>
     </div>

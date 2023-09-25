@@ -1,3 +1,5 @@
+@import 'src/_partials/_variables';
+
 .journey {
     display: flex;
     flex-direction: column;
@@ -11,5 +13,25 @@
         padding-top: 1em;
         overflow-y: auto;
         flex: 1;
+
+        > :not(.journey-stage-banner){
+            margin-bottom:20px;
+        }
+    
+        .journey-stage-banner {
+            padding: 0.75em;
+            cursor: default;
+            font-size: larger;
+            font-weight: bold;
+    
+            &.available {
+                &:hover {
+                    // Turning off hover for these banners
+                    background-color: $selectable-colour;
+                    color: $selectable-text;
+                }
+            }
+        }
     }
+
 }
