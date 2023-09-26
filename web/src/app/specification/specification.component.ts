@@ -27,7 +27,6 @@ import { DimensionsSelectorComponent } from './dimensions-selector/dimensions-se
         <div>What should we call your box?</div>
         <input type="text" [(ngModel)]="boxName" maxlength="24" (input)="boxPlan.updateBoxName(boxName)" />
       </div>      
-      <!-- TODO - box name -->
       <hr/>
       <app-wood-selector [boxPlan]="boxPlan"/>
       <hr/>
