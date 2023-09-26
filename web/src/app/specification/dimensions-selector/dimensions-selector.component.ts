@@ -17,32 +17,32 @@ import { BoxPlan } from 'src/app/boxplan';
       <div>
         <input 
           type="number" 
-          [(ngModel)]="height" 
+          [(ngModel)]="depth" 
           step="1" 
           [min]="2*boxPlan.getWood().size" 
           max="100" 
-          (input)="updateHeight(height)"
+          (input)="updateDepth(depth)"
           prompt 
         /> mm</div>      
     </div>    
-    <div *ngIf="hasHeight()" class="dimension-prompt">The full box will be {{boxPlan.getTargetDepth()}}mm tall.</div>
-    <div *ngIf="!hasHeight()" class="dimension-prompt">The full box will be {{boxPlan.getTargetDepthDifference()}}mm taller than this.</div>
+    <div *ngIf="hasDepth()" class="dimension-prompt">The full box will be {{boxPlan.getTargetDepth()}}mm tall.</div>
+    <div *ngIf="!hasDepth()" class="dimension-prompt">The full box will be {{boxPlan.getTargetDepthDifference()}}mm taller than this.</div>
   `,
   styleUrls: ['./dimensions-selector.component.scss']
 })
 export class DimensionsSelectorComponent {
   @Input() boxPlan!: BoxPlan;
 
-  height?: number;
+  depth?: number;
 
-  updateHeight(height: number | undefined) {
-    if(height) {
-      this.boxPlan.updateTargetWorkableDepth(height)
+  updateDepth(depth: number | undefined) {
+    if(depth) {
+      this.boxPlan.updateTargetWorkableDepth(depth)
     }
   }
 
-  hasHeight(): boolean {
-    if (this.height) {
+  hasDepth(): boolean {
+    if (this.depth) {
       return true;
     } else {
       return false;
