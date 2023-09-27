@@ -82,6 +82,9 @@ import {v4 as uuidv4} from 'uuid';
             </div>
           </div>
         </div>
+        <div class="grid-box grid-4"></div>
+        <div class="grid-box grid-4"></div>
+        <div class="grid-box grid-4"></div>
       </div>
       <button *ngIf="hasCompartments()" (click)="generateArrangement()">Arrange</button>      
     </div>
