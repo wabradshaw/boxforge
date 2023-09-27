@@ -30,18 +30,26 @@ import { PlannedCompartment } from '../planned-compartment';
                   [attr.height]="compartment.targetLength"
                   fill="white">
             </rect>
-            <text [attr.x]="compartment.x + compartment.width / 2"
+            <text *ngIf="compartment.flipped === false"
+                  [attr.x]="compartment.x + compartment.width / 2"
                   [attr.y]="compartment.y + compartment.length / 2"
                   text-anchor="middle"
                   dominant-baseline="middle"
                   [attr.font-size]="getFontSize(compartment)">{{ compartment.name }}</text>
+            <text *ngIf="compartment.flipped"
+                  [attr.x]="compartment.x + compartment.width / 2"
+                  [attr.y]="compartment.y + compartment.length / 2"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  [attr.font-size]="getFontSize(compartment)"
+                  [attr.transform]="'rotate(90,' + (compartment.x + compartment.width / 2) + ',' + (compartment.y + compartment.length / 2) + ')'">{{ compartment.name }}</text>
           </ng-container>
         </svg>
         <div class="card-contents">
           <div class="card-title">{{arrangement.width}} mm x {{arrangement.length}} mm</div>
           <div class="card-description">
-            <div>Area: {{arrangement.area / 100}} cm²</div>
-            <div>Padding: {{arrangement.wastedArea / 100}} cm²</div>
+            <div>Target Space: {{arrangement.area / 100}} cm²</div>
+            <div>Padded Space: {{arrangement.wastedArea / 100}} cm²</div>
           </div>
         </div>
       </div>

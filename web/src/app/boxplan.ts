@@ -3,6 +3,7 @@ import { Journey } from "./journey/journey";
 import { Wood, defaultWood } from "./specification/wood";
 import { Lid, defaultLid } from "./specification/lid";
 import { Arrangement } from "./arrangement/arrangement";
+import { Compartment } from "./design/compartment";
 
 /**
  * The main data model for a box.
@@ -32,7 +33,10 @@ export class BoxPlan {
     private _actualWorkableWidth?: number;
     private _actualWorkableLength?: number;
 
+    private _compartments:Compartment[] = [];
     private _arrangements:Arrangement[] = [];
+
+    private _targetArea:number = 0;
 
     getBoxName():string {return this._boxName};
     getWood():Wood {return this._wood};
@@ -55,6 +59,8 @@ export class BoxPlan {
     getActualWorkableWidth():number | undefined {return this._actualWorkableWidth};
     getActualWorkableLength():number | undefined {return this._actualWorkableLength};
     
+    getCompartments():Compartment[] { return this._compartments};
+    getTargetArea():number {return this._targetArea};
     getArrangements():Arrangement[] { return this._arrangements};
     
     updateBoxName(boxName: string):void {
@@ -91,13 +97,29 @@ export class BoxPlan {
         return woodWidth + lidHeightFunction(woodWidth)
     }
 
+    clearCompartments(): void {
+        this._compartments = [];
+        this._targetArea = 0;
+        this.clearArrangements();
+    }
+
+    updateCompartments(compartments: Compartment[]){
+        if(compartments.length == 0){
+            this.clearCompartments();
+        } else {
+            this._compartments = compartments;
+            this._targetArea = compartments.reduce((acc, compartment) => acc + (compartment.width * compartment.length), 0);
+            this.journey.arrangement.state = 'available';           
+        }        
+    }
+
     clearArrangements(): void {
         this._arrangements = [];
         this.journey.arrangement.state = 'disabled';   
         this.journey.customisation.state = 'disabled';   
         this.journey.review.state = 'disabled';   
     }
-    
+
     updateArrangements(arrangements: Arrangement[]){
         if(arrangements.length == 0){
             this.clearArrangements();

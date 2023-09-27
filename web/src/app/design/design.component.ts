@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { BoxPlan } from '../boxplan';
 import { Compartment } from './compartment';
-import { Arrangement } from '../arrangement/arrangement';
 import { ArrangementService } from '../arrangement/arrangement.service';
 
 import {v4 as uuidv4} from 'uuid';
@@ -139,8 +138,10 @@ export class DesignComponent {
   }
 
   generateArrangement(): void {
-    console.log("generating arrangement");
-    this.arrangementService.planArrangements(this.boxPlan);
+    this.boxPlan.updateCompartments(this.compartments);
+    console.log("Generating arrangement");
+    let arrangements =  this.arrangementService.planArrangements(this.boxPlan);
+    this.boxPlan.updateArrangements(arrangements);
   }
 
   testSetup() {
@@ -148,9 +149,9 @@ export class DesignComponent {
       { id: '1', name: 'Comp1', depth: 10, width: 50, length: 60 },
       { id: '2', name: 'Comp2', depth: 10, width: 50, length: 55},
       { id: '3', name: 'Comp3', depth: 5, width: 45, length: 15 },
-      { id: '4', name: 'Nigel', depth: 3, width: 150, length: 34 },
-      { id: '5', name: 'Nigella', depth: 3, width: 150, length: 34},
-      { id: '6', name: 'Nigella', depth: 3, width: 140, length: 5 }
+      { id: '4', name: 'Short', depth: 3, width: 150, length: 34 },
+      { id: '5', name: 'Longer Name', depth: 3, width: 150, length: 34},
+      { id: '6', name: 'Long Name', depth: 3, width: 140, length: 5 }
     ];
   }
 }
