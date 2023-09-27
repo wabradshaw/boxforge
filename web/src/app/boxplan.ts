@@ -2,6 +2,7 @@ import { Journey } from "./journey/journey";
 
 import { Wood, defaultWood } from "./specification/wood";
 import { Lid, defaultLid } from "./specification/lid";
+import { Arrangement } from "./arrangement/arrangement";
 
 /**
  * The main data model for a box.
@@ -31,6 +32,8 @@ export class BoxPlan {
     private _actualWorkableWidth?: number;
     private _actualWorkableLength?: number;
 
+    private _arrangements:Arrangement[] = [];
+
     getBoxName():string {return this._boxName};
     getWood():Wood {return this._wood};
     getLid():Lid {return this._lid};
@@ -51,6 +54,8 @@ export class BoxPlan {
     getActualWorkableDepth():number | undefined {return this._actualWorkableDepth};
     getActualWorkableWidth():number | undefined {return this._actualWorkableWidth};
     getActualWorkableLength():number | undefined {return this._actualWorkableLength};
+    
+    getArrangements():Arrangement[] { return this._arrangements};
     
     updateBoxName(boxName: string):void {
         if(boxName.trim().length == 0) {
@@ -84,6 +89,22 @@ export class BoxPlan {
         let woodWidth = this._wood.size;
         let lidHeightFunction = this._lid.depthChange;
         return woodWidth + lidHeightFunction(woodWidth)
+    }
+
+    clearArrangements(): void {
+        this._arrangements = [];
+        this.journey.arrangement.state = 'disabled';   
+        this.journey.customisation.state = 'disabled';   
+        this.journey.review.state = 'disabled';   
+    }
+    
+    updateArrangements(arrangements: Arrangement[]){
+        if(arrangements.length == 0){
+            this.clearArrangements();
+        } else {
+            this._arrangements = arrangements;
+            this.journey.arrangement.state = 'available';           
+        }        
     }
 
     private _recalculateTargetDimensions() {

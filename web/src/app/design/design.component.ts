@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { BoxPlan } from '../boxplan';
 import { Compartment } from './compartment';
+import { Arrangement } from '../arrangement/arrangement';
+import { ArrangementService } from '../arrangement/arrangement.service';
 
 import {v4 as uuidv4} from 'uuid';
 
@@ -74,20 +76,26 @@ import {v4 as uuidv4} from 'uuid';
         <div class="grid-box grid-4"
           *ngFor="let compartment of compartments">
           <div class="card">
-            <div class="card-contents">
-              {{compartment.name}} : {{compartment.width}}mm x {{compartment.length}}mm x {{compartment.depth}}mm              
+            <div class="card-contents"> 
+              <div>{{compartment.name}}</div>
+              <div>{{compartment.width}} mm x {{compartment.length}} mm</div>
+              <div>{{compartment.depth}} mm deep</div>
             </div>
           </div>
         </div>
       </div>
-      <button *ngIf="hasCompartments()">Arrange</button>      
+      <button *ngIf="hasCompartments()" (click)="generateArrangement()">Arrange</button>      
     </div>
   `,
   styleUrls: ['./design.component.scss']
 })
 export class DesignComponent {
   @Input() boxPlan!: BoxPlan;
- 
+
+  constructor(private arrangementService: ArrangementService) {
+    (window as any).test = () => this.testSetup();
+  }
+
   nextName = 1;
   newName = "1";
   newDepth?:number = undefined;
@@ -101,7 +109,6 @@ export class DesignComponent {
   }
 
   addCompartment(){
-    console.log("clicked");
     if (this.newWidth && this.newLength && this.boxPlan.getTargetWorkableDepth()){
       if (!this.newDepth) {
         this.newDepth = this.boxPlan.getTargetWorkableDepth()
@@ -124,10 +131,26 @@ export class DesignComponent {
     }
   }
 
-  findNextName(): string{
+  findNextName(): string {
     while(this.compartments.map(x => x.name).indexOf(this.nextName.toString()) > -1){
       this.nextName = (this.nextName + 1) % 30;  
     }
     return this.nextName.toString();
+  }
+
+  generateArrangement(): void {
+    console.log("generating arrangement");
+    this.arrangementService.planArrangements(this.boxPlan);
+  }
+
+  testSetup() {
+    this.compartments = [
+      { id: '1', name: 'Comp1', depth: 10, width: 50, length: 60 },
+      { id: '2', name: 'Comp2', depth: 10, width: 50, length: 55},
+      { id: '3', name: 'Comp3', depth: 5, width: 45, length: 15 },
+      { id: '4', name: 'Nigel', depth: 3, width: 150, length: 34 },
+      { id: '5', name: 'Nigella', depth: 3, width: 150, length: 34},
+      { id: '6', name: 'Nigella', depth: 3, width: 140, length: 5 }
+    ];
   }
 }

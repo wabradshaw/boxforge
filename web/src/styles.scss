@@ -59,6 +59,9 @@ html {
     &.grid-3 {
         max-width: 400px;
     }
+    &.grid-2 {
+        max-width: 600px;
+    }
     
     // Angular components inside gridboxes were ignoring the flex property.
     & > :not(div){
