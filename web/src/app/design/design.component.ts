@@ -97,6 +97,7 @@ export class DesignComponent {
   constructor(private arrangementService: ArrangementService) {
     (window as any).test = () => this.testSetup();
     (window as any).t2 = (compartmentCount?: number, dupes?: number, maxSize?: number) => this.testSetup2(compartmentCount, dupes, maxSize);
+    (window as any).problemCase = () => this.problemCase();
   }
 
   nextName = 1;
@@ -176,5 +177,14 @@ export class DesignComponent {
 
     console.log(comps);
     this.compartments = comps;
+  }
+  problemCase() {
+    this.compartments = [
+      { id: '1', name: '1', depth: 10, width: 7, length: 61 },
+      { id: '2', name: '2', depth: 10, width: 7, length: 61},
+      { id: '3', name: '3', depth: 5, width: 20, length: 61 },
+      { id: '4', name: '4', depth: 3, width: 45, length: 84 },
+      { id: '5', name: '5', depth: 3, width: 94, length: 46}
+    ];
   }
 }
