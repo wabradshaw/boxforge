@@ -121,7 +121,8 @@ export class SingleStripRefillAlgorithm implements ArrangementAlgorithm {
                 length: boxLength,
                 compartments: plannedCompartments,
                 area: area,
-                wastedArea: area - targetArea
+                wastedArea: area - targetArea,
+                algorithm: "Single strip"
             }];
         } else {
             return [];

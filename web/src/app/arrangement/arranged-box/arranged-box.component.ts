@@ -50,6 +50,7 @@ import { PlannedCompartment } from '../planned-compartment';
           <div class="card-description">
             <div>Target Space: {{arrangement.area / 100}} cm²</div>
             <div>Padded Space: {{arrangement.wastedArea / 100}} cm²</div>
+            <div class="algo">{{arrangement.algorithm}}</div>
           </div>
         </div>
       </div>

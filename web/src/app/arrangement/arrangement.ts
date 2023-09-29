@@ -6,4 +6,5 @@ export interface Arrangement {
     compartments: PlannedCompartment[];
     area: number;
     wastedArea: number;
+    algorithm: string;
 }

@@ -17,7 +17,8 @@ export class TestArrangementAlgorithm implements ArrangementAlgorithm {
             { id: '6', name: 'Long Name', depth: 3, x: 109, y: 77, width: 150, length: 6, targetWidth: 140, targetLength: 5, flipped: false }
             ],
             "area":  (50*80)+(50*60)+(50*17)+(150*34)+(150*34)+(150*6),
-            "wastedArea": (50*80)+(50*60)+(50*17)+(150*34)+(150*34)+(150*6) - ((50*60)+(50*55)+(45*15)+(150*34)+(150*34)+(140*5)) 
+            "wastedArea": (50*80)+(50*60)+(50*17)+(150*34)+(150*34)+(150*6) - ((50*60)+(50*55)+(45*15)+(150*34)+(150*34)+(140*5)),
+            "algorithm": "test1"
         },
         {
             "width": 156,
@@ -31,7 +32,8 @@ export class TestArrangementAlgorithm implements ArrangementAlgorithm {
             { id: '6', name: 'Long Name', depth: 3, x: 3, y: 77, width: 150, length: 5, targetWidth: 140, targetLength: 5, flipped: false  }
             ],
             "area": (65*50)+(60*50)+(19*50)+(150*34)+(150*34)+(150*5),
-            "wastedArea": (65*50)+(60*50)+(19*50)+(150*34)+(150*34)+(150*5) - ((50*60)+(50*55)+(45*15)+(150*34)+(150*34)+(140*5)) 
+            "wastedArea": (65*50)+(60*50)+(19*50)+(150*34)+(150*34)+(150*5) - ((50*60)+(50*55)+(45*15)+(150*34)+(150*34)+(140*5)),
+            "algorithm": "test2"
         }];
     }    
 }

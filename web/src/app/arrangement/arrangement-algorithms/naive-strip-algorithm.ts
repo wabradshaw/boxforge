@@ -11,14 +11,15 @@ export class NaiveStripAlgorithm implements ArrangementAlgorithm {
         let targetArea = boxPlan.getTargetArea();
 
         return [
-            this.planStrip(compartments, woodWidth, targetArea, comp => false),
-            this.planStrip(compartments, woodWidth, targetArea, comp => true),
-            this.planStrip(compartments, woodWidth, targetArea, comp => comp.length > comp.width),
-            this.planStrip(compartments, woodWidth, targetArea, comp => comp.length <= comp.width)
+            this.planStrip("as supplied", compartments, woodWidth, targetArea, comp => false),
+            this.planStrip("flipped", compartments, woodWidth, targetArea, comp => true),
+            this.planStrip("min first", compartments, woodWidth, targetArea, comp => comp.length > comp.width),
+            this.planStrip("max first", compartments, woodWidth, targetArea, comp => comp.length <= comp.width)
         ];
     }    
 
-    private planStrip(compartments: Compartment[], 
+    private planStrip(algorithm: string,
+                      compartments: Compartment[], 
                       woodWidth: number, 
                       targetArea: number,
                       flipAxis:(comp:Compartment) => boolean): Arrangement {
@@ -56,7 +57,8 @@ export class NaiveStripAlgorithm implements ArrangementAlgorithm {
             length: boxLength,
             compartments: plannedCompartments,
             area: area,
-            wastedArea: area - targetArea
+            wastedArea: area - targetArea,
+            algorithm: "Naive " + algorithm
         };
     }
 }

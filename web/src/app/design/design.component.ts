@@ -78,7 +78,7 @@ import {v4 as uuidv4} from 'uuid';
             <div class="card-contents"> 
               <div>{{compartment.name}}</div>
               <div>{{compartment.width}} mm x {{compartment.length}} mm</div>
-              <div>{{compartment.depth}} mm deep</div>
+              <div>{{compartment.depth}} mm deep</div>              
             </div>
           </div>
         </div>
@@ -96,6 +96,7 @@ export class DesignComponent {
 
   constructor(private arrangementService: ArrangementService) {
     (window as any).test = () => this.testSetup();
+    (window as any).t2 = (compartmentCount?: number, dupes?: number, maxSize?: number) => this.testSetup2(compartmentCount, dupes, maxSize);
   }
 
   nextName = 1;
@@ -156,5 +157,24 @@ export class DesignComponent {
       { id: '5', name: 'Longer Name', depth: 3, width: 150, length: 34},
       { id: '6', name: 'Long Name', depth: 3, width: 140, length: 5 }
     ];
+  }
+  testSetup2(compartmentCount = (1 + Math.random() * 18), dupes = 0.33, maxSize = 100){
+    const comps:Compartment[] = [];
+
+    let lastLength = Math.random() * maxSize;
+    let lastWidth = Math.random() * maxSize;
+    for (let i = 0; i < compartmentCount; i++){
+      
+      comps.push({
+        id: i.toString(),
+        name: i.toString(),
+        depth: Math.ceil(Math.random() * this.boxPlan.getTargetWorkableDepth()!),
+        width: Math.ceil(Math.random() > dupes ? Math.random() * maxSize : lastWidth),
+        length: Math.ceil(Math.random() > dupes ? Math.random() * maxSize : lastLength)
+      })
+    }
+
+    console.log(comps);
+    this.compartments = comps;
   }
 }
