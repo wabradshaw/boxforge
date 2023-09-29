@@ -1,6 +1,6 @@
 import { BoxPlan } from "src/app/boxplan";
-import { Arrangement } from "../arrangement";
+import { PlannedBox } from "./common/planned-box";
 
-export interface ArrangementAlgorithm {
-    plan: (boxPlan: BoxPlan) => Arrangement[]
+export interface PlanningAlgorithm {
+    plan: (boxPlan: BoxPlan) => PlannedBox[]
 }

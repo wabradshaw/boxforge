@@ -1,64 +1,32 @@
 import { Compartment } from "src/app/design/compartment";
-import { Arrangement } from "../arrangement";
-import { ArrangementAlgorithm } from "./arrangement-algorithm";
+import { PlanningAlgorithm } from "./arrangement-algorithm";
 import { BoxPlan } from "src/app/boxplan";
-import { PlannedCompartment } from "../planned-compartment";
+import { PlannedBox } from "./common/planned-box";
+import { PlannedRow } from "./common/planned-row";
+import { PlannedColumn} from "./common/planned-column";
+import { FlippableCompartment } from "./common/flippable-compartment";
 
-export class NaiveStripAlgorithm implements ArrangementAlgorithm {
-    plan(boxPlan: BoxPlan): Arrangement[] {
+export class NaiveStripAlgorithm implements PlanningAlgorithm {
+    plan(boxPlan: BoxPlan): PlannedBox[] {
         let compartments = boxPlan.getCompartments();
         let woodWidth = boxPlan.getWood().size;
-        let targetArea = boxPlan.getTargetArea();
 
         return [
-            this.planStrip("as supplied", compartments, woodWidth, targetArea, comp => false),
-            this.planStrip("flipped", compartments, woodWidth, targetArea, comp => true),
-            this.planStrip("max width", compartments, woodWidth, targetArea, comp => comp.length > comp.width),
-            this.planStrip("max length", compartments, woodWidth, targetArea, comp => comp.length <= comp.width)
+            this.planStrip("as supplied", compartments, woodWidth, _ => false),
+            this.planStrip("flipped", compartments, woodWidth, _ => true),
+            this.planStrip("max width", compartments, woodWidth, comp => comp.length > comp.width),
+            this.planStrip("max length", compartments, woodWidth, comp => comp.length <= comp.width)
         ];
     }    
 
     private planStrip(algorithm: string,
                       compartments: Compartment[], 
                       woodWidth: number, 
-                      targetArea: number,
-                      flipAxis:(comp:Compartment) => boolean): Arrangement {
+                      flipAxis:(comp:Compartment) => boolean): PlannedBox {
 
-        var boxWidth = woodWidth;
-        var area = 0;
+        const columns: PlannedColumn[] = compartments.map(comp => new FlippableCompartment(comp, flipAxis(comp)))
+                                                     .map(fComp => new PlannedColumn([fComp], 0));
 
-        let compartmentLength = compartments.reduce((acc, comp) => Math.max(acc, flipAxis(comp) ? comp.width : comp.length), 0);
-        let boxLength = compartmentLength + (2 * woodWidth);
-
-        let plannedCompartments: PlannedCompartment[] = [];
-
-        compartments.forEach(compartment => {
-            let flip = flipAxis(compartment);
-            let compartmentWidth = flip ? compartment.length : compartment.width;
-
-            plannedCompartments.push({
-                id: compartment.id,
-                name: compartment.name,
-                depth: compartment.depth,
-                x: boxWidth,
-                y: woodWidth,
-                width: compartmentWidth,
-                length: compartmentLength,
-                targetWidth: compartmentWidth,
-                targetLength: flip ? compartment.width : compartment.length,
-                flipped: flip
-            });
-            boxWidth = boxWidth + compartmentWidth + woodWidth;
-            area += compartmentWidth * compartmentLength;
-        });
-
-        return {
-            width: boxWidth,
-            length: boxLength,
-            compartments: plannedCompartments,
-            area: area,
-            wastedArea: area - targetArea,
-            algorithm: "Naive " + algorithm
-        };
+        return {algorithm: algorithm, rows: [new PlannedRow(columns, woodWidth)]};
     }
 }
