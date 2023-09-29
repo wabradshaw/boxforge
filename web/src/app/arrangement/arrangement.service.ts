@@ -42,6 +42,8 @@ export class ArrangementService {
         plannedBoxes =  this._arrangementAlgorithms.flatMap(algo => algo.plan(boxPlan));
       }
 
+      plannedBoxes.forEach(box => this.tidy(box));
+
       let results = plannedBoxes.map(plan => this.arrange(plan, boxPlan));      
       
       results.sort((a,b) => a.wastedArea - b.wastedArea);
@@ -50,8 +52,13 @@ export class ArrangementService {
     }
   }
 
-  arrange(plannedBox: PlannedBox, 
-          boxPlan: BoxPlan): Arrangement {                        
+  private tidy(plannedBox: PlannedBox) {
+    plannedBox.rows.sort((a,b) => a.columns.length - b.columns.length);
+    plannedBox.rows.forEach(row => row.columns.sort((a,b) => a.compartments.length - b.compartments.length));
+  }
+
+  private arrange(plannedBox: PlannedBox, 
+                  boxPlan: BoxPlan): Arrangement {                        
 
     //TODO: loop
     const plannedRows = plannedBox.rows;
@@ -114,5 +121,5 @@ export class ArrangementService {
     };
 
     return result;
-}
+  }
 }
