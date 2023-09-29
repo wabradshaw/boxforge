@@ -63,6 +63,10 @@ export class ArrangedBoxComponent {
   @Input() arrangement!: Arrangement;
 
   getFontSize(compartment: PlannedCompartment): number {
-    return Math.min(compartment.length / 2, compartment.width / compartment.name.length);
+    if(compartment.flipped){
+      return Math.min(compartment.width / 2, compartment.length / compartment.name.length);
+    } else {
+      return Math.min(compartment.length / 2, compartment.width / compartment.name.length);
+    }
   }
 }
