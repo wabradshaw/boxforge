@@ -14,7 +14,6 @@ export class NaiveStripAlgorithm implements PlanningAlgorithm {
         return [
             this.planStrip("as supplied", compartments, woodWidth, _ => false),
             this.planStrip("flipped", compartments, woodWidth, _ => true),
-            this.planStrip("max width", compartments, woodWidth, comp => comp.length > comp.width),
             this.planStrip("max length", compartments, woodWidth, comp => comp.length <= comp.width)
         ];
     }    
