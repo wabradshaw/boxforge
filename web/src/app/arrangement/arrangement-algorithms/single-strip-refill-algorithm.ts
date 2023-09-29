@@ -33,15 +33,24 @@ export class SingleStripRefillAlgorithm implements ArrangementAlgorithm {
                 
                 let length = next.maxSide;
                 let remainingLength = firstCompartmentLength - length;
-                while(sortedComponents.length > 0 &&
-                      remainingLength > woodWidth + sortedComponents[sortedComponents.length-1].maxSide){
+                while(sortedComponents.length > 0 && remainingLength > woodWidth){
 
-                    const candidateIndex = sortedComponents.findIndex(comp => remainingLength >= comp.maxSide && comp.minSide <= colWidth);
+                    const candidateIndex = sortedComponents.findIndex(comp => (remainingLength >= comp.maxSide && colWidth >= comp.minSide) 
+                                                                           || (remainingLength >= comp.minSide && colWidth >= comp.maxSide));                                                       
 
                     if(candidateIndex > -1){
                         const candidate = sortedComponents.splice(candidateIndex, 1)[0];
+                        const minFirst = remainingLength < candidate.maxSide || candidate.minSide > colWidth;
+
+                        let change: number = woodWidth;
+                        if(minFirst) {
+                            candidate.flipped = !candidate.flipped;
+                            change += candidate.minSide;
+                        } else {
+                            change += candidate.maxSide;
+                        }
                         columnCompartments.push(candidate);
-                        const change = candidate.maxSide + woodWidth;
+                        
                         length += change;
                         remainingLength -= change;
                     } else {
@@ -75,8 +84,12 @@ export class SingleStripRefillAlgorithm implements ArrangementAlgorithm {
                 const x = boxWidth;
                 let y = woodWidth;
                 
-                colCompartments.forEach(compartment => {                    
-                    let compartmentLength = compartment.maxSide + evenPadding + unevenPadding;
+                colCompartments.forEach(compartment => {
+                    const flipped = compartment.flipped;
+                    const originalLength = flipped ? compartment.width : compartment.length;
+                    const originalWidth = flipped ? compartment.length : compartment.width;
+
+                    let compartmentLength = originalLength + evenPadding + unevenPadding;
                     area += compartmentLength * col.width;
 
                     plannedCompartments.push({
@@ -87,9 +100,9 @@ export class SingleStripRefillAlgorithm implements ArrangementAlgorithm {
                         y: y,
                         width: col.width,
                         length: compartmentLength,
-                        targetWidth: compartment.minSide,
-                        targetLength: compartment.maxSide,
-                        flipped: compartment.flipped
+                        targetWidth: originalWidth,
+                        targetLength: originalLength,
+                        flipped: flipped
                     });
 
                     if (unevenPadding > 0) {
