@@ -35,9 +35,16 @@ export class FlippableCompartment {
             this.currentWidth = placeholder;
         }
     }
-}
 
-export function toLengthFlippedComponent(comp: Compartment): FlippableCompartment {
-    return new FlippableCompartment(comp, comp.width > comp.length)
+    clone(): FlippableCompartment {
+        const clonedCompartment = new FlippableCompartment({
+            id: this.id,
+            name: this.name,
+            depth: this.depth,
+            length: this.originalLength,
+            width: this.originalWidth
+        }, this._flipped);
+    
+        return clonedCompartment;
+    }
 }
-
