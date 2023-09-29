@@ -15,7 +15,6 @@ import { FlippableCompartment } from './arrangement-algorithms/common/flippable-
 export class ArrangementService {
 
   private _arrangementAlgorithms: PlanningAlgorithm[] = [
-    //new TestArrangementAlgorithm(),
     new NaiveStripAlgorithm(),
     new SingleStripRefillAlgorithm()
   ];
@@ -80,7 +79,11 @@ export class ArrangementService {
             const unpaddedLength = compartment.currentLength;
             const unpaddedWidth = compartment.currentWidth;
 
-            let compartmentLength = unpaddedLength + evenPadding + unevenPadding;
+            let compartmentLength = unpaddedLength + evenPadding;
+            if (unevenPadding > 0) {
+              unevenPadding--;
+              compartmentLength++;
+            }
             area += compartmentLength * col.width;
 
             plannedCompartments.push({
@@ -96,9 +99,6 @@ export class ArrangementService {
                 flipped: flipped
             });
 
-            if (unevenPadding > 0) {
-                unevenPadding--;
-            }
             y += compartmentLength + woodWidth;
         });
         boxWidth += col.width + woodWidth;
