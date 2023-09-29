@@ -13,8 +13,8 @@ export class NaiveStripAlgorithm implements ArrangementAlgorithm {
         return [
             this.planStrip("as supplied", compartments, woodWidth, targetArea, comp => false),
             this.planStrip("flipped", compartments, woodWidth, targetArea, comp => true),
-            this.planStrip("min first", compartments, woodWidth, targetArea, comp => comp.length > comp.width),
-            this.planStrip("max first", compartments, woodWidth, targetArea, comp => comp.length <= comp.width)
+            this.planStrip("max width", compartments, woodWidth, targetArea, comp => comp.length > comp.width),
+            this.planStrip("max length", compartments, woodWidth, targetArea, comp => comp.length <= comp.width)
         ];
     }    
 
