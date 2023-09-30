@@ -26,6 +26,6 @@ export class NaiveStripAlgorithm implements PlanningAlgorithm {
         const columns: PlannedColumn[] = compartments.map(comp => new FlippableCompartment(comp, flipAxis(comp)))
                                                      .map(fComp => new PlannedColumn([fComp], 0));
 
-        return {algorithm: algorithm, rows: [new PlannedRow(columns, woodWidth)]};
+        return new PlannedBox(algorithm, [new PlannedRow(columns, woodWidth)]);
     }
 }

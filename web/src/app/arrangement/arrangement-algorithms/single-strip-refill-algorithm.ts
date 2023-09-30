@@ -37,7 +37,7 @@ export class SingleStripRefillAlgorithm implements PlanningAlgorithm {
 
     private planStrip(algorithm: string, originalCompartments: FlippableCompartment[], woodWidth: number, 
                       flipAxisCondition: (comp:FlippableCompartment) => boolean,
-                      sorter: (a:FlippableCompartment, b:FlippableCompartment) => number) {
+                      sorter: (a:FlippableCompartment, b:FlippableCompartment) => number): PlannedBox {
         
         const compartments = originalCompartments.map(c => c.clone());
 
@@ -60,7 +60,8 @@ export class SingleStripRefillAlgorithm implements PlanningAlgorithm {
             columnHeadCompartment = compartments.shift();
         }
 
-        let result = { algorithm: "single strip - " + algorithm, rows: [new PlannedRow(plannedColumns, woodWidth)] };
+        let result = new PlannedBox("single strip - " + algorithm, 
+                                    [new PlannedRow(plannedColumns, woodWidth)]);
         return result;
     }
 

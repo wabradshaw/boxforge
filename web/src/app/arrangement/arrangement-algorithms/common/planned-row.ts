@@ -10,4 +10,12 @@ export class PlannedRow {
         this.length = columns.reduce((acc, col) => Math.max(acc, col.length), 0);
         this.width = columns.reduce((acc, col) => acc + col.width + woodWidth, -woodWidth);
     }
+
+    effectiveHash(): string {
+        return `[${this.columns.map(c=>c.effectiveHash()).join("|")}]`;
+    }
+
+    practicallyEquals(other: PlannedRow): boolean {
+        return this.effectiveHash() === other.effectiveHash();
+    }
 }

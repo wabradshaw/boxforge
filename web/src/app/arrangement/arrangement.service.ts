@@ -8,6 +8,7 @@ import { PlannedRow } from './arrangement-algorithms/common/planned-row';
 import { PlannedCompartment } from './planned-compartment';
 import { PlannedBox } from './arrangement-algorithms/common/planned-box';
 import { FlippableCompartment } from './arrangement-algorithms/common/flippable-compartment';
+import { PlannedColumn } from './arrangement-algorithms/common/planned-column';
 
 @Injectable({
   providedIn: 'root'
@@ -29,22 +30,18 @@ export class ArrangementService {
       let plannedBoxes: PlannedBox[];
 
       if (compartmentCount === 1) { 
-        let compartment = boxPlan.getCompartments()[0];
-        plannedBoxes = [{
-                          algorithm: "Singleton", 
-                          rows: [new PlannedRow([{
-                            width: compartment.width,
-                            length: compartment.length,
-                            compartments: [new FlippableCompartment(compartment)]
-                          }], 0)]
-                      }];  
+        plannedBoxes = this.singletonBox(boxPlan);  
       } else {
         plannedBoxes =  this._arrangementAlgorithms.flatMap(algo => algo.plan(boxPlan));
       }
 
+      console.log(plannedBoxes);
+
       plannedBoxes.forEach(box => this.tidy(box));
 
-      let results = plannedBoxes.map(plan => this.arrange(plan, boxPlan));      
+      let uniqueBoxes = this.mergeAndDeduplicatePlannedBoxes(plannedBoxes);
+
+      let results = uniqueBoxes.map(plan => this.arrange(plan, boxPlan));      
       
       results.sort((a,b) => a.wastedArea - b.wastedArea);
 
@@ -52,9 +49,35 @@ export class ArrangementService {
     }
   }
 
+  private singletonBox(boxPlan: BoxPlan) {
+    let compartment = boxPlan.getCompartments()[0];
+    return [
+      new PlannedBox("Singleton",
+        [new PlannedRow([new PlannedColumn([new FlippableCompartment(compartment)], 0)], 0)]
+      )
+    ];
+  }
+
   private tidy(plannedBox: PlannedBox) {
     plannedBox.rows.sort((a,b) => a.columns.length - b.columns.length);
     plannedBox.rows.forEach(row => row.columns.sort((a,b) => a.compartments.length - b.compartments.length));
+  }
+
+  private mergeAndDeduplicatePlannedBoxes(boxes: PlannedBox[]): PlannedBox[] {
+    const boxMap = new Map<string, PlannedBox>();
+
+    for (const box of boxes) {
+        const hashValue = box.effectiveHash();
+        const existingBox = boxMap.get(hashValue);
+
+        if (existingBox) {
+            existingBox.algorithm += ` | ${box.algorithm}`;
+        } else {
+            boxMap.set(hashValue, box);
+        }
+    }
+
+    return Array.from(boxMap.values());
   }
 
   private arrange(plannedBox: PlannedBox, 

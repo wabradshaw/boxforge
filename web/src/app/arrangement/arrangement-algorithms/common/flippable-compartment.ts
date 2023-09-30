@@ -47,4 +47,12 @@ export class FlippableCompartment {
     
         return clonedCompartment;
     }
+
+    effectiveHash(): string {
+        return `${this.currentWidth}_${this.currentLength}`;
+    }
+
+    practicallyEquals(other: FlippableCompartment): boolean {
+        return this.effectiveHash() === other.effectiveHash();
+    }
 }
