@@ -14,6 +14,7 @@ import { ShortFirstSingleStripAlgorithm } from './arrangement-algorithms/single-
 import { AsIsAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-algorithm';
 import { AsIsFlippedAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-flipped-algorithm';
 import { AsIsLengthfirstAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-lengthfirst-algorithm';
+import { LeftoverMultistrip } from './arrangement-algorithms/multi-strip/leftover-multistrip-algorithm';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class ArrangementService {
     new WidthwiseSingleStripAlgorithm(),
     new ShortFirstSingleStripAlgorithm(),
     new RandomSingleStripAlgorithm(),
+    new LeftoverMultistrip(new LengthwiseSingleStripAlgorithm()),
+    new LeftoverMultistrip(new LengthwiseSingleStripAlgorithm(),3),
+    new LeftoverMultistrip(new WidthwiseSingleStripAlgorithm()),
+    new LeftoverMultistrip(new WidthwiseSingleStripAlgorithm(),3)
   ];
 
   planArrangements(boxPlan: BoxPlan): Arrangement[] {
@@ -63,7 +68,8 @@ export class ArrangementService {
     let compartment = boxPlan.getCompartments()[0];
     return [
       new PlannedBox("Singleton",
-        [new PlannedRow([new PlannedColumn([new FlippableCompartment(compartment)], 0)], 0)]
+        [new PlannedRow([new PlannedColumn([new FlippableCompartment(compartment)], 0)], 0)],
+        0
       )
     ];
   }
@@ -92,61 +98,76 @@ export class ArrangementService {
 
   private arrange(plannedBox: PlannedBox, 
                   boxPlan: BoxPlan): Arrangement {                        
-
-    //TODO: loop
-    const plannedRows = plannedBox.rows;
-    const plannedColumns = plannedRows[0].columns;
-
-    let area = 0;
-    let woodWidth = boxPlan.getWood().size;
-    let boxWidth = woodWidth;
-
+    const woodWidth = boxPlan.getWood().size;
     const plannedCompartments: PlannedCompartment[] = [];
 
-    const rowLength = plannedColumns.reduce((acc, col) => Math.max(acc, col.length), 0);
+    let area = 0;
 
-    plannedColumns.forEach(col => {
-        const difference = rowLength - col.length;
-        const colCompartments = col.compartments;
-        const evenPadding: number = Math.floor(difference / colCompartments.length);
-        let unevenPadding: number = difference % colCompartments.length;
+    const plannedRows = plannedBox.rows;
+    
+    let baseY = woodWidth;
 
-        const x = boxWidth;
-        let y = woodWidth;
+    plannedRows.forEach(row => {      
+      let rowLength = row.length;
+      const rowDifference = plannedBox.width - row.width;
+      const plannedColumns = row.columns;
 
-        colCompartments.forEach(compartment => {
-            const flipped = compartment.isFlipped();
-            const unpaddedLength = compartment.currentLength;
-            const unpaddedWidth = compartment.currentWidth;
+      const evenRowPadding: number = Math.floor(rowDifference / plannedColumns.length);
+      let unevenRowPadding: number = rowDifference % plannedColumns.length;
+      
+      let x = woodWidth;
 
-            let compartmentLength = unpaddedLength + evenPadding;
-            if (unevenPadding > 0) {
-              unevenPadding--;
-              compartmentLength++;
-            }
-            area += compartmentLength * col.width;
+      plannedColumns.forEach(col => {
+          const columnDifference = rowLength - col.length;
+          const colCompartments = col.compartments;
+          const evenColumnPadding: number = Math.floor(columnDifference / colCompartments.length);
+          let unevenColumnPadding: number = columnDifference % colCompartments.length;
 
-            plannedCompartments.push({
-                id: compartment.id,
-                name: compartment.name,
-                depth: compartment.depth,
-                x: x,
-                y: y,
-                width: col.width,
-                length: compartmentLength,
-                targetWidth: unpaddedWidth,
-                targetLength: unpaddedLength,
-                flipped: flipped
-            });
+          let y = baseY;
 
-            y += compartmentLength + woodWidth;
-        });
-        boxWidth += col.width + woodWidth;
+          let columnWidthPad = evenRowPadding;
+          if (unevenRowPadding > 0) {
+            unevenRowPadding--;
+            columnWidthPad++;
+          }
+
+          colCompartments.forEach(compartment => {
+              const flipped = compartment.isFlipped();
+              const unpaddedLength = compartment.currentLength;
+              const unpaddedWidth = compartment.currentWidth;
+
+              let compartmentWidth = col.width + evenRowPadding
+              let compartmentLength = unpaddedLength + evenColumnPadding;
+              if (unevenColumnPadding > 0) {
+                unevenColumnPadding--;
+                compartmentLength++;
+              }
+              area += compartmentLength * compartmentWidth;
+
+              plannedCompartments.push({
+                  id: compartment.id,
+                  name: compartment.name,
+                  depth: compartment.depth,
+                  x: x,
+                  y: y,
+                  width: compartmentWidth,
+                  length: compartmentLength,
+                  targetWidth: unpaddedWidth,
+                  targetLength: unpaddedLength,
+                  flipped: flipped
+              });
+
+              y += compartmentLength + woodWidth;
+          });
+
+          x += col.width + woodWidth + columnWidthPad;
+      });
+      baseY += row.length + woodWidth;
     });
 
     const result = {
-        width: boxWidth,
-        length: rowLength + (2 * woodWidth),
+        width: plannedBox.width + (2 * woodWidth),
+        length: plannedBox.length + (2 * woodWidth),
         compartments: plannedCompartments,
         area: area,
         wastedArea: area - boxPlan.getTargetArea(),
