@@ -2,13 +2,18 @@ import { Injectable } from '@angular/core';
 import { BoxPlan } from '../boxplan';
 import { Arrangement } from './arrangement';
 import { PlanningAlgorithm } from './arrangement-algorithms/arrangement-algorithm';
-import { NaiveStripAlgorithm } from './arrangement-algorithms/naive-strip-algorithm';
-import { SingleStripRefillAlgorithm } from './arrangement-algorithms/single-strip-refill-algorithm';
 import { PlannedRow } from './arrangement-algorithms/common/planned-row';
 import { PlannedCompartment } from './planned-compartment';
 import { PlannedBox } from './arrangement-algorithms/common/planned-box';
 import { FlippableCompartment } from './arrangement-algorithms/common/flippable-compartment';
 import { PlannedColumn } from './arrangement-algorithms/common/planned-column';
+import { LengthwiseSingleStripAlgorithm } from './arrangement-algorithms/single-strip/refill/lengthwise-ss-refill';
+import { RandomSingleStripAlgorithm } from './arrangement-algorithms/single-strip/refill/random-ss-refill';
+import { WidthwiseSingleStripAlgorithm } from './arrangement-algorithms/single-strip/refill/widthwise-ss-refill';
+import { ShortFirstSingleStripAlgorithm } from './arrangement-algorithms/single-strip/refill/shortfirst-ss-refill';
+import { AsIsAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-algorithm';
+import { AsIsFlippedAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-flipped-algorithm';
+import { AsIsLengthfirstAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-lengthfirst-algorithm';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +21,13 @@ import { PlannedColumn } from './arrangement-algorithms/common/planned-column';
 export class ArrangementService {
 
   private _arrangementAlgorithms: PlanningAlgorithm[] = [
-    new NaiveStripAlgorithm(),
-    new SingleStripRefillAlgorithm()
+    new AsIsAlgorithm(),
+    new AsIsFlippedAlgorithm(),
+    new AsIsLengthfirstAlgorithm(),
+    new LengthwiseSingleStripAlgorithm(),
+    new WidthwiseSingleStripAlgorithm(),
+    new ShortFirstSingleStripAlgorithm(),
+    new RandomSingleStripAlgorithm(),
   ];
 
   planArrangements(boxPlan: BoxPlan): Arrangement[] {
