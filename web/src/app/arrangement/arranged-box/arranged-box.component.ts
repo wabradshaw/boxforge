@@ -22,7 +22,7 @@ import { PlannedCompartment } from '../planned-compartment';
                   [attr.y]="compartment.y"
                   [attr.width]="compartment.width"
                   [attr.height]="compartment.length"
-                  fill="lightGray">
+                  fill="red">
             </rect>
             <rect [attr.x]="compartment.x"
                   [attr.y]="compartment.y"
@@ -46,7 +46,7 @@ import { PlannedCompartment } from '../planned-compartment';
           </ng-container>
         </svg>
         <div class="card-contents">
-          <div class="card-title">{{arrangement.width}} mm x {{arrangement.length}} mm</div>
+          <div class="card-title">{{arrangement.width}} mm x {{arrangement.length}} mm : {{getEfficiency()}}% Efficient</div>
           <div class="card-description">
             <div>Box Area: {{arrangement.width * arrangement.length / 100}} cm²</div>
             <div>Usable Space: {{arrangement.area / 100}} cm²</div>
@@ -68,5 +68,9 @@ export class ArrangedBoxComponent {
     } else {
       return Math.min(compartment.length / 2, compartment.width / compartment.name.length);
     }
+  }
+
+  getEfficiency(){
+    return Math.round((1-(this.arrangement.wastedArea / this.arrangement.area))*100);
   }
 }
