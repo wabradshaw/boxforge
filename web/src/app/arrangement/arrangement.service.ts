@@ -34,7 +34,8 @@ export class ArrangementService {
     new LeftoverMultistrip(new LengthwiseSingleStripAlgorithm()),
     new LeftoverMultistrip(new LengthwiseSingleStripAlgorithm(),3),
     new LeftoverMultistrip(new WidthwiseSingleStripAlgorithm()),
-    new LeftoverMultistrip(new WidthwiseSingleStripAlgorithm(),3)
+    new LeftoverMultistrip(new WidthwiseSingleStripAlgorithm(),3),
+    new LeftoverMultistrip(new MostSimilarSingleStripAlgorithm())
   ];
 
   planArrangements(boxPlan: BoxPlan): Arrangement[] {
@@ -138,7 +139,7 @@ export class ArrangementService {
               const unpaddedLength = compartment.currentLength;
               const unpaddedWidth = compartment.currentWidth;
 
-              let compartmentWidth = col.width + evenRowPadding
+              let compartmentWidth = col.width + columnWidthPad;
               let compartmentLength = unpaddedLength + evenColumnPadding;
               if (unevenColumnPadding > 0) {
                 unevenColumnPadding--;
