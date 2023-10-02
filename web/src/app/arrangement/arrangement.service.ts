@@ -15,6 +15,7 @@ import { AsIsAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is
 import { AsIsFlippedAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-flipped-algorithm';
 import { AsIsLengthfirstAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-lengthfirst-algorithm';
 import { LeftoverMultistrip } from './arrangement-algorithms/multi-strip/leftover-multistrip-algorithm';
+import { MostSimilarSingleStripAlgorithm } from './arrangement-algorithms/single-strip/refill/most-similar-ss-refill';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class ArrangementService {
     new WidthwiseSingleStripAlgorithm(),
     new ShortFirstSingleStripAlgorithm(),
     new RandomSingleStripAlgorithm(),
+    new MostSimilarSingleStripAlgorithm(),
     new LeftoverMultistrip(new LengthwiseSingleStripAlgorithm()),
     new LeftoverMultistrip(new LengthwiseSingleStripAlgorithm(),3),
     new LeftoverMultistrip(new WidthwiseSingleStripAlgorithm()),

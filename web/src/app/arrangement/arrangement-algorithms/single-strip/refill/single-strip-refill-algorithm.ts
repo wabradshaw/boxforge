@@ -14,13 +14,9 @@ export abstract class SingleStripRefillAlgorithm extends SingleStripAlgorithm {
 
         const compartmentsByLongestDimension = compartments.sort(maxDimensionSorter);
 
-        const firstCompartment = compartmentsByLongestDimension.shift()!;
-        if(firstCompartment.currentWidth > firstCompartment.currentLength){
-            firstCompartment.flip();
-        }
-        const maxColumnLength = firstCompartment.maxSide;
-        
-        const plannedColumns = [new PlannedColumn([firstCompartment], woodWidth)];
+        const firstColumn = this.planFirstColumn(compartmentsByLongestDimension, woodWidth);        
+        const maxColumnLength = firstColumn.length;
+        const plannedColumns = [firstColumn];
 
         const remainingCompartments = this.prepareCompartments(compartmentsByLongestDimension);
 
@@ -33,6 +29,16 @@ export abstract class SingleStripRefillAlgorithm extends SingleStripAlgorithm {
         }
 
         return new PlannedRow(plannedColumns, woodWidth);
+    }
+
+    planFirstColumn(compartmentsByLongestDimension: FlippableCompartment[], woodWidth: number): PlannedColumn {
+        const firstCompartment = compartmentsByLongestDimension.shift()!;
+        if (firstCompartment.currentWidth > firstCompartment.currentLength) {
+            firstCompartment.flip();
+        }
+
+        const firstColumn = new PlannedColumn([firstCompartment], woodWidth);
+        return firstColumn;
     }
 
     private fillColumn(compartments: FlippableCompartment[],
