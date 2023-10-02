@@ -5,7 +5,7 @@ import { SingleStripRefillAlgorithm } from "./single-strip-refill-algorithm";
 export class MostSimilarSingleStripAlgorithm extends SingleStripRefillAlgorithm {
 
     constructor(){
-        super("ms");
+        super("sim");
     }
     
     override planFirstColumn(compartments: FlippableCompartment[], woodWidth: number): PlannedColumn {
