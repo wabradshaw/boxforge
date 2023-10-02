@@ -144,7 +144,6 @@ export class DesignComponent {
 
   generateArrangement(): void {
     this.boxPlan.updateCompartments(this.compartments);
-    console.log("Generating arrangement");
     let arrangements =  this.arrangementService.planArrangements(this.boxPlan);
     this.boxPlan.updateArrangements(arrangements);
   }
@@ -162,16 +161,16 @@ export class DesignComponent {
   testSetup2(compartmentCount = (1 + Math.random() * 18), dupes = 0.33, maxSize = 100){
     const comps:Compartment[] = [];
 
-    let lastLength = Math.random() * maxSize;
-    let lastWidth = Math.random() * maxSize;
+    let lastLength = 5 + (Math.random() * maxSize);
+    let lastWidth = 5 + (Math.random() * maxSize);
     for (let i = 0; i < compartmentCount; i++){
       
       comps.push({
         id: i.toString(),
         name: i.toString(),
         depth: Math.ceil(Math.random() * this.boxPlan.getTargetWorkableDepth()!),
-        width: Math.ceil(Math.random() > dupes ? Math.random() * maxSize : lastWidth),
-        length: Math.ceil(Math.random() > dupes ? Math.random() * maxSize : lastLength)
+        width: Math.ceil(Math.random() > dupes ? 5 + (Math.random() * maxSize) : lastWidth),
+        length: Math.ceil(Math.random() > dupes ? 5 + (Math.random() * maxSize) : lastLength)
       })
     }
 
