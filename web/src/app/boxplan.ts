@@ -33,6 +33,8 @@ export class BoxPlan {
     private _actualWorkableWidth?: number;
     private _actualWorkableLength?: number;
 
+    private _minPaddedCompartmentSize: number = 20;
+
     private _compartments:Compartment[] = [];
     private _arrangements:Arrangement[] = [];
 
@@ -59,6 +61,8 @@ export class BoxPlan {
     getActualWorkableWidth():number | undefined {return this._actualWorkableWidth};
     getActualWorkableLength():number | undefined {return this._actualWorkableLength};
     
+    getMinPaddedCompartmentSize():number {return this._minPaddedCompartmentSize};
+
     getCompartments():Compartment[] { return this._compartments};
     getTargetArea():number {return this._targetArea};
     getArrangements():Arrangement[] { return this._arrangements};
@@ -111,6 +115,11 @@ export class BoxPlan {
             this._targetArea = compartments.reduce((acc, compartment) => acc + (compartment.width * compartment.length), 0);
             this.journey.arrangement.state = 'available';           
         }        
+    }
+
+    updateMinPaddedCompartmentSize(size: number){
+        console.log("Set to " + size);
+        this._minPaddedCompartmentSize = Math.max(size, this.getWood().size);
     }
 
     clearArrangements(): void {

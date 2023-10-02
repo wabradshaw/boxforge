@@ -16,6 +16,7 @@ import { AsIsFlippedAlgorithm } from './arrangement-algorithms/single-strip/naiv
 import { AsIsLengthfirstAlgorithm } from './arrangement-algorithms/single-strip/naive/as-is-lengthfirst-algorithm';
 import { LeftoverMultistrip } from './arrangement-algorithms/multi-strip/leftover-multistrip-algorithm';
 import { MostSimilarSingleStripAlgorithm } from './arrangement-algorithms/single-strip/refill/most-similar-ss-refill';
+import {v4 as uuidv4} from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -115,16 +116,35 @@ export class ArrangementService {
       const rowDifference = plannedBox.width - row.width;
       const plannedColumns = row.columns;
 
-      const evenRowPadding: number = Math.floor(rowDifference / plannedColumns.length);
-      let unevenRowPadding: number = rowDifference % plannedColumns.length;
+      let evenRowPadding: number;
+      let unevenRowPadding: number;
+
+      if(rowDifference >= boxPlan.getMinPaddedCompartmentSize()){
+        plannedColumns.push(new PlannedColumn([this.padCompartment(rowDifference - woodWidth, rowLength, boxPlan.getTargetWorkableDepth()!)], woodWidth));
+        evenRowPadding = 0;
+        unevenRowPadding = 0;
+      } else {          
+        evenRowPadding = Math.floor(rowDifference / plannedColumns.length);
+        unevenRowPadding = rowDifference % plannedColumns.length;
+      }
       
       let x = woodWidth;
 
       plannedColumns.forEach(col => {
           const columnDifference = rowLength - col.length;
           const colCompartments = col.compartments;
-          const evenColumnPadding: number = Math.floor(columnDifference / colCompartments.length);
-          let unevenColumnPadding: number = columnDifference % colCompartments.length;
+
+          let evenColumnPadding: number;
+          let unevenColumnPadding: number;
+
+          if(columnDifference >= boxPlan.getMinPaddedCompartmentSize()){
+            colCompartments.push(this.padCompartment(col.width, columnDifference - woodWidth, boxPlan.getTargetWorkableDepth()!));
+            evenColumnPadding = 0;
+            unevenColumnPadding = 0;
+          } else {          
+            evenColumnPadding = Math.floor(columnDifference / colCompartments.length);
+            unevenColumnPadding = columnDifference % colCompartments.length;
+          }
 
           let y = baseY;
 
@@ -155,8 +175,8 @@ export class ArrangementService {
                   y: y,
                   width: compartmentWidth,
                   length: compartmentLength,
-                  targetWidth: unpaddedWidth,
-                  targetLength: unpaddedLength,
+                  targetWidth: compartment.isPadding ? 0 : unpaddedWidth,
+                  targetLength: compartment.isPadding ? 0 : unpaddedLength,
                   flipped: flipped
               });
 
@@ -179,4 +199,18 @@ export class ArrangementService {
 
     return result;
   }
+
+  padCompartment(width: number, length: number, depth:number): FlippableCompartment {
+    const compartment = {
+      id: uuidv4(),
+      name: "Padding",
+      depth: depth,
+      length: length,
+      width: width 
+    };
+    return new FlippableCompartment(compartment, false, true);
+  }
 }
+
+
+

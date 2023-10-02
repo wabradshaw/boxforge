@@ -11,8 +11,9 @@ export class FlippableCompartment {
     private _flipped: boolean;
     currentLength: number;
     currentWidth: number;
-
-    constructor(comp: Compartment, flipped: boolean = false){
+    readonly isPadding: boolean;
+    
+    constructor(comp: Compartment, flipped: boolean = false, isPadding: boolean = false){
         this.id = comp.id;
         this.name = comp.name;
         this.depth = comp.depth;
@@ -23,6 +24,7 @@ export class FlippableCompartment {
         this.minSide = Math.min(comp.width, comp.length),
         this.currentLength = flipped ? comp.width : comp.length,
         this.currentWidth = flipped ? comp.length : comp.width
+        this.isPadding = isPadding;
     }
 
     isFlipped(): boolean { return this._flipped;}

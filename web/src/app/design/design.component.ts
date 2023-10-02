@@ -86,6 +86,17 @@ import {v4 as uuidv4} from 'uuid';
         <div class="grid-box grid-4"></div>
         <div class="grid-box grid-4"></div>
       </div>
+      <div class="prompt inlinable">      
+        <div>Create padding compartments for spaces larger than:</div>
+        <div>
+          <input 
+            type="number" 
+            [(ngModel)]="minPadCompartmentSize" 
+            step="1" 
+            [min]="2*boxPlan.getWood().size"
+          /> mm 
+        </div>
+      </div>     
       <button *ngIf="hasCompartments()" (click)="generateArrangement()">Arrange</button>      
     </div>
   `,
@@ -105,6 +116,8 @@ export class DesignComponent {
   newDepth?:number = undefined;
   newWidth?:number = undefined;
   newLength?:number = undefined;
+
+  minPadCompartmentSize?:number = undefined;
 
   compartments:Compartment[] = [];
 
@@ -143,6 +156,9 @@ export class DesignComponent {
   }
 
   generateArrangement(): void {
+    if(this.minPadCompartmentSize){
+      this.boxPlan.updateMinPaddedCompartmentSize(this.minPadCompartmentSize);
+    }
     this.boxPlan.updateCompartments(this.compartments);
     let arrangements =  this.arrangementService.planArrangements(this.boxPlan);
     this.boxPlan.updateArrangements(arrangements);
