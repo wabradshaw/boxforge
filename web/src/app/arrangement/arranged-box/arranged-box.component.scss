@@ -2,6 +2,12 @@
     display: block;
     width: 100%;
     height: auto;
+
+    .svg-wrapper {
+        width: 100%;
+        max-height: 600px;
+        display:flex;
+    }
 }
 
 .algo {
