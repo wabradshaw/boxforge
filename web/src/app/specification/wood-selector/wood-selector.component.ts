@@ -17,7 +17,7 @@ import { padList } from 'src/_partials/_cardpad';
     <div class="list-wrapper">
       <div class="grid-box grid-4"
         *ngFor="let wood of possibleWoodsList">
-        <div *ngIf="isWood(wood)" class="card" [ngClass]="{'selected': wood==boxPlan.getWood()}" (click)="updateWood(wood)">
+        <div *ngIf="isWood(wood)" class="card selectable-card" [ngClass]="{'selected': wood==boxPlan.getWood()}" (click)="updateWood(wood)">
             <div class="image-wrapper">
                 <img [src]="wood.picture" [alt]="wood.name"/>
             </div>

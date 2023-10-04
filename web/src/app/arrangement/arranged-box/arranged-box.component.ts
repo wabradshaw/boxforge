@@ -9,7 +9,7 @@ import { PlannedCompartment } from '../planned-compartment';
   imports: [CommonModule],
   template: `
     <div class="grid-box grid-2">
-      <div class="card box-design">
+      <div class="card box-design selectable-card">
         <svg [attr.viewBox]="'0 0 ' + arrangement.width + ' ' + arrangement.length"> 
           <rect [attr.x]="0"
                 [attr.y]="0"

@@ -1,13 +1,15 @@
 // Named colours
 $blue: #245eb2;
 $pale-blue: #4380d9;
+$blue-tint: #97B5E2;
 
 // Semantic colour palette
+$subtle: $blue-tint;
 $accent: $pale-blue;
 $boundary-colour: black;
 
 $background-colour: whitesmoke;
-$disabled-colour: gainsboro;
+$disabled-colour: #dcdcdc;
 $disabled-text: gray;
 $selectable-colour: white;
 $selectable-text: black;
@@ -17,6 +19,8 @@ $selected-colour: $blue;
 $selected-text: white;
 $warning-color: pink;
 $warning-text: red;
+$subtle-colour: $subtle;
+$subtle-text: black;
 
 // Structures
 $side-padding: 10px;

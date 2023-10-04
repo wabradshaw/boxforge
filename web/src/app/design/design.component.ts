@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CompartmentDesignComponent } from './compartment-design/compartment-design.component';
 
 import { BoxPlan } from '../boxplan';
 import { Compartment } from './compartment';
@@ -8,12 +9,14 @@ import { ArrangementService } from '../arrangement/arrangement.service';
 
 import {v4 as uuidv4} from 'uuid';
 
+
 @Component({
   selector: 'app-design',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    CompartmentDesignComponent
   ],
   template: `
     <div class="design">
@@ -65,27 +68,23 @@ import {v4 as uuidv4} from 'uuid';
           </div>     
         </div>
         <button 
-          class="available" 
           class="arrange" 
-          [ngClass]="compartments.length >= 20 ? 'disabled' : 'available'"
+          [ngClass]="compartments.length >= 21 ? 'disabled' : 'available'"
           (click)="addCompartment()"
         >Add</button>
       </div>
+      <hr/>
+      <div> Compartments: </div>
       <div class="list-wrapper">
         <div class="grid-box grid-4"
           *ngFor="let compartment of compartments">
-          <div class="card">
-            <div class="card-contents"> 
-              <div>{{compartment.name}}</div>
-              <div>{{compartment.width}} mm x {{compartment.length}} mm</div>
-              <div>{{compartment.depth}} mm deep</div>              
-            </div>
-          </div>
+          <app-compartment-design [compartment]="compartment" [boxPlan]="boxPlan" [allCompartments]="compartments"/>
         </div>
         <div class="grid-box grid-4"></div>
         <div class="grid-box grid-4"></div>
         <div class="grid-box grid-4"></div>
       </div>
+      <hr/>
       <div class="prompt inlinable">      
         <div>Create padding compartments for spaces larger than:</div>
         <div>
@@ -94,6 +93,7 @@ import {v4 as uuidv4} from 'uuid';
             [(ngModel)]="minPadCompartmentSize" 
             step="1" 
             [min]="2*boxPlan.getWood().size"
+            [max]="999"
           /> mm 
         </div>
       </div>     

@@ -17,7 +17,7 @@ import { padList } from 'src/_partials/_cardpad';
     <div class="list-wrapper">
       <div class="grid-box grid-3"
       *ngFor="let lid of possibleLidsList" >
-        <div *ngIf="isLid(lid)" (click)="updateLid(lid)" class="card lid-card" [ngClass]="{'selected': lid==boxPlan.getLid()}">
+        <div *ngIf="isLid(lid)" (click)="updateLid(lid)" class="card lid-card selectable-card" [ngClass]="{'selected': lid==boxPlan.getLid()}">
           <div class="image-wrapper" [ngClass]="lid.name + '-lid'" [innerHTML]="lid.imageHtml">
           </div>
           <div class="card-contents">

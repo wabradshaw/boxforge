@@ -117,6 +117,12 @@ export class BoxPlan {
         }        
     }
 
+    addCompartment(compartment:Compartment){
+        const newCompartments = [...this._compartments];
+        newCompartments.push(compartment)
+        this.updateCompartments(newCompartments);
+    }
+
     updateMinPaddedCompartmentSize(size: number){
         console.log("Set to " + size);
         this._minPaddedCompartmentSize = Math.max(size, this.getWood().size);
