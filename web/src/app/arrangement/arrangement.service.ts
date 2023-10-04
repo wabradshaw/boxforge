@@ -62,7 +62,7 @@ export class ArrangementService {
 
       let results = uniqueBoxes.map(plan => this.arrange(plan, boxPlan));      
       
-      results.sort((a,b) => a.wastedArea - b.wastedArea);
+      results.sort((a,b) => (a.length + a.width) - (b.length + b.width));
 
       return results;  
     }
