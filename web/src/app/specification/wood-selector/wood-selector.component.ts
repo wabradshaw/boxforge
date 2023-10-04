@@ -25,7 +25,7 @@ import { padList } from 'src/_partials/_cardpad';
                 <div class="card-title">{{wood.size}}mm {{wood.name}}</div>
                 <div class="card-description">{{wood.description}}</div>
                 <div class="card-warning"
-                  *ngIf="wood.size!=boxPlan.getWood().size"
+                  *ngIf="wood.size!=boxPlan.getWood().size && boxPlan.getArrangements().length > 0"
                 >This is a different size, so it will change your design</div>
             </div>
         </div>
