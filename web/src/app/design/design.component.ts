@@ -61,7 +61,8 @@ import {v4 as uuidv4} from 'uuid';
                 [(ngModel)]="newDepth" 
                 step="1" 
                 [min]="boxPlan.getWood().size" 
-                [max]="boxPlan.getTargetWorkableDepth() || 100" 
+                [max]="boxPlan.getTargetWorkableDepth() || 100"
+                [placeholder]="boxPlan.getTargetWorkableDepth()"
                 prompt 
               /> mm 
             </div>
