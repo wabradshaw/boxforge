@@ -95,6 +95,7 @@ import {v4 as uuidv4} from 'uuid';
             step="1" 
             [min]="2*boxPlan.getWood().size"
             [max]="999"
+            [placeholder]="boxPlan.getMinPaddedCompartmentSize()"
           /> mm 
         </div>
       </div>     

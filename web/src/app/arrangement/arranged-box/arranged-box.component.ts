@@ -3,14 +3,19 @@ import { CommonModule } from '@angular/common';
 import { Arrangement } from '../arrangement';
 import { PlannedCompartment } from '../planned-compartment';
 
+import { BoxSVGCreator } from 'src/app/review/drawing.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-arranged-box',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="grid-box grid-2">
+    <div class="grid-box grid-2" (click)="drawSvg()">
       <div class="card box-design selectable-card">
-        <div class="svg-wrapper">
+        <div class="svg-wrapper" *ngIf="svgContent" [innerHTML]="svgContent">
+        </div>
+        <div class="svg-wrapper" *ngIf="svgContent == ''">
           <svg [attr.viewBox]="'0 0 ' + arrangement.width + ' ' + arrangement.length" preserveAspectRation="xMidYMid meet"> 
             <rect [attr.x]="0"
                   [attr.y]="0"
@@ -58,11 +63,21 @@ import { PlannedCompartment } from '../planned-compartment';
         </div>
       </div>
     </div>
+    <div class="grid-box grid-2" (click)="drawSvg()" *ngIf="svgContent">
+      <div class="card box-design selectable-card">
+
+      </div>
+    </div>
   `,
   styleUrls: ['./arranged-box.component.scss']
 })
 export class ArrangedBoxComponent {
   @Input() arrangement!: Arrangement;
+  readonly boxCreator: BoxSVGCreator = new BoxSVGCreator(3, 10, 4);
+
+  constructor(private sanitizer: DomSanitizer) { }
+
+  public svgContent: string = '';
 
   getFontSize(compartment: PlannedCompartment): number {
     if(compartment.flipped){
@@ -74,5 +89,14 @@ export class ArrangedBoxComponent {
 
   getEfficiency(){
     return Math.round((1-(this.arrangement.wastedArea / this.arrangement.area))*100);
+  }
+
+  drawSvg(): void {
+    if (this.svgContent) {
+      this.svgContent = "";
+    } else {
+      var unsafeSvgContent = this.boxCreator.drawBox(this.arrangement.width, this.arrangement.length, this.arrangement.compartments[0].depth);
+      this.svgContent = this.sanitizer.bypassSecurityTrustHtml(unsafeSvgContent) as string;
+    }
   }
 }
