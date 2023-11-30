@@ -8,5 +8,6 @@ export interface PlannedCompartment {
     width: number,
     targetLength: number,
     targetWidth: number,
-    flipped: boolean  
+    flipped: boolean,
+    path: [number, number, number]  
 }

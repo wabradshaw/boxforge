@@ -95,7 +95,7 @@ export class ArrangedBoxComponent {
     if (this.svgContent) {
       this.svgContent = "";
     } else {
-      var unsafeSvgContent = this.boxCreator.drawBox(this.arrangement.width, this.arrangement.length, this.arrangement.compartments[0].depth);
+      var unsafeSvgContent = this.boxCreator.drawBox(this.arrangement);
       this.svgContent = this.sanitizer.bypassSecurityTrustHtml(unsafeSvgContent) as string;
     }
   }

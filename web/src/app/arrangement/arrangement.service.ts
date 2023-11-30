@@ -111,7 +111,10 @@ export class ArrangementService {
     
     let baseY = woodWidth;
 
+    let rowIndex = -1;
+
     plannedRows.forEach(row => {      
+      rowIndex++;
       let rowLength = row.length;
       const rowDifference = plannedBox.width - row.width;
       const plannedColumns = row.columns;
@@ -129,58 +132,63 @@ export class ArrangementService {
       }
       
       let x = woodWidth;
+      let colIndex = -1;
 
       plannedColumns.forEach(col => {
-          const columnDifference = rowLength - col.length;
-          const colCompartments = col.compartments;
+        colIndex++;
+        const columnDifference = rowLength - col.length;
+        const colCompartments = col.compartments;
 
-          let evenColumnPadding: number;
-          let unevenColumnPadding: number;
+        let evenColumnPadding: number;
+        let unevenColumnPadding: number;
 
-          if(columnDifference >= boxPlan.getMinPaddedCompartmentSize()){
-            colCompartments.push(this.padCompartment(col.width, columnDifference - woodWidth, boxPlan.getTargetWorkableDepth()!));
-            evenColumnPadding = 0;
-            unevenColumnPadding = 0;
-          } else {          
-            evenColumnPadding = Math.floor(columnDifference / colCompartments.length);
-            unevenColumnPadding = columnDifference % colCompartments.length;
+        if(columnDifference >= boxPlan.getMinPaddedCompartmentSize()){
+          colCompartments.push(this.padCompartment(col.width, columnDifference - woodWidth, boxPlan.getTargetWorkableDepth()!));
+          evenColumnPadding = 0;
+          unevenColumnPadding = 0;
+        } else {          
+          evenColumnPadding = Math.floor(columnDifference / colCompartments.length);
+          unevenColumnPadding = columnDifference % colCompartments.length;
+        }
+
+        let y = baseY;
+
+        let columnWidthPad = evenRowPadding;
+        if (unevenRowPadding > 0) {
+          unevenRowPadding--;
+          columnWidthPad++;
+        }
+
+        let comIndex = -1;
+        colCompartments.forEach(compartment => {
+          comIndex++;
+          const flipped = compartment.isFlipped();
+          const unpaddedLength = compartment.currentLength;
+          const unpaddedWidth = compartment.currentWidth;
+
+          let compartmentWidth = col.width + columnWidthPad;
+          let compartmentLength = unpaddedLength + evenColumnPadding;
+          if (unevenColumnPadding > 0) {
+            unevenColumnPadding--;
+            compartmentLength++;
           }
+          area += compartmentLength * compartmentWidth;
 
-          let y = baseY;
+          plannedCompartments.push({
+              id: compartment.id,
+              name: compartment.name,
+              depth: compartment.depth,
+              x: x,
+              y: y,
+              width: compartmentWidth,
+              length: compartmentLength,
+              targetWidth: compartment.isPadding ? 0 : unpaddedWidth,
+              targetLength: compartment.isPadding ? 0 : unpaddedLength,
+              flipped: flipped,
+              path: [rowIndex,colIndex,comIndex]
+          });
 
-          let columnWidthPad = evenRowPadding;
-          if (unevenRowPadding > 0) {
-            unevenRowPadding--;
-            columnWidthPad++;
-          }
-
-          colCompartments.forEach(compartment => {
-              const flipped = compartment.isFlipped();
-              const unpaddedLength = compartment.currentLength;
-              const unpaddedWidth = compartment.currentWidth;
-
-              let compartmentWidth = col.width + columnWidthPad;
-              let compartmentLength = unpaddedLength + evenColumnPadding;
-              if (unevenColumnPadding > 0) {
-                unevenColumnPadding--;
-                compartmentLength++;
-              }
-              area += compartmentLength * compartmentWidth;
-
-              plannedCompartments.push({
-                  id: compartment.id,
-                  name: compartment.name,
-                  depth: compartment.depth,
-                  x: x,
-                  y: y,
-                  width: compartmentWidth,
-                  length: compartmentLength,
-                  targetWidth: compartment.isPadding ? 0 : unpaddedWidth,
-                  targetLength: compartment.isPadding ? 0 : unpaddedLength,
-                  flipped: flipped
-              });
-
-              y += compartmentLength + woodWidth;
+          y += compartmentLength + woodWidth;
           });
 
           x += col.width + woodWidth + columnWidthPad;
